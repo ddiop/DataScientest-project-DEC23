@@ -1,9 +1,10 @@
 .mypy_cache/
 .pytest_cache/
-.venv/
+venv/
 .vscode/
 .DS_Store
 **/__pychache__/
 .idea/
 config.yml
 *.json
+*.csv
