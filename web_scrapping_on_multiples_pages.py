@@ -127,15 +127,3 @@ def aggregate_weather_data(urls: List[str]) -> pd.DataFrame:
                                       ignore_index=True)
     return aggregated_df
 
-
-if __name__ == "__main__":
-    dates_to_scrape = ['202301', '202302', '202303', '202304', '202305',
-                       '202306', '202307', '202308', '202309', '202310',
-                       '202311', '202312', '202401', '202402']
-    locations_to_scrape = {'Canberra': '2801',
-                           'Tuggeranong': '2802',
-                           'Mount Ginini': '2804'}
-    pages_to_scrape = generate_urls(dates_to_scrape,
-                                    list(locations_to_scrape.values()))
-    weather_df = aggregate_weather_data(pages_to_scrape)
-    weather_df.to_csv('weatherScrappedAUS.csv')
