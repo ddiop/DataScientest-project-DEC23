@@ -7,22 +7,6 @@ from typing import Dict, List, Tuple, Optional
 
 import json
 import requests
-import yaml
-
-
-def load_config(config_file: str = 'config.yml') -> Dict:
-    """
-    Loads YAML configuration and returns it as a dictionary.
-
-    Args:
-        config_file (str): Path to the YAML file containing configuration data.
-
-    Returns:
-        Dict: A dictionary containing configuration parameters.
-    """
-    with open(config_file, 'r', encoding='utf-8') as file:
-        config_data = yaml.safe_load(file)
-    return config_data
 
 
 def store_to_json(data: Dict, filename: str = 'example.json') -> None:
