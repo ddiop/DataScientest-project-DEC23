@@ -5,7 +5,7 @@ venv/
 .DS_Store
 **/__pycache__/
 .idea/
-config.yml
-*.json
-*.csv
+json/
+csv/
 .env
+/.ipynb_checkpoints/
