@@ -9,8 +9,8 @@ def air_pollution_data_structure(air_pollution, city_id) -> Dict:
     """
     Structure the air pollution information into a DataFrame.
 
-    :arg air_pollution: Dictionary containing air pollution information.
-    :arg city_id: City ID.
+    :param air_pollution: Dictionary containing air pollution information.
+    :param city_id: City ID.
     :return: DataFrame containing structured air pollution information.
     """
     return {
@@ -33,8 +33,8 @@ def previous_air_pollution_data_structure(air_pollution, city_id) -> pd.DataFram
     """
     Structure the air pollution information into a DataFrame.
 
-    :arg air_pollution: Dictionary containing air pollution information.
-    :arg city_id: City ID.
+    :param air_pollution: Dictionary containing air pollution information.
+    :param city_id: City ID.
     :return: DataFrame containing structured air pollution information.
     """
     structured_data = []

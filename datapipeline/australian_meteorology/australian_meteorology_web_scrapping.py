@@ -13,6 +13,7 @@ from database.postgresql_functools import PostgreSQLManager, AustralianMeteorolo
 
 if __name__ == '__main__':
     load_dotenv()
+    dir_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
     verbose = True
 
     # Define the dates to scrape: <year><month>
@@ -34,7 +35,7 @@ if __name__ == '__main__':
 
     # Save the weather data to a CSV file
     if verbose:
-        weather_df.to_csv(os.path.join('csv', 'AustralianMeteorologyWeatherInfo.csv'), index=False)
+        weather_df.to_csv(os.path.join(dir_path, 'csv', 'AustralianMeteorologyWeatherInfo.csv'), index=False)
 
     # Store the weather data to PostgreSQL database
     postgre_manager = PostgreSQLManager()

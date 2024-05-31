@@ -10,21 +10,14 @@ def build_air_pollution_url(latitude: float,
     """
     Constructs a URL for fetching current air pollution data
     for a specific location from the OpenWeatherMap API.
-
-    Args:
-        latitude (float): The latitude of the location for
-            which air pollution data is requested.
-        longitude (float): The longitude of the location for
-            which air pollution data is requested.
-        api_key (str): Your API key for accessing the OpenWeatherMap API.
-
-    Returns:
-        str: A URL string that can be used to query the OpenWeatherMap API
-            for current air pollution data.
-
     Documentation:
         For more information on the API endpoint, visit:
             https://openweathermap.org/api/air-pollution
+
+    :param latitude: The latitude of the location for which air pollution data is requested.
+    :param longitude: The longitude of the location for which air pollution data is requested.
+    :param api_key: Your API key for accessing the OpenWeatherMap API.
+    :return: A URL string that can be used to query the OpenWeatherMap API for current air pollution data.
     """
     url = "http://api.openweathermap.org/data/2.5/air_pollution?lat=" \
           f"{latitude}&lon={longitude}&appid={api_key}"
@@ -45,13 +38,13 @@ def build_previous_air_pollution_url(latitude: float,
         For more information on the API endpoint, visit:
             https://openweathermap.org/api/air-pollution
 
-    :arg latitude: The latitude of the location for which historical air pollution
+    :param latitude: The latitude of the location for which historical air pollution
         data is requested.
-    :arg longitude: The longitude of the location for which historical air pollution
+    :param longitude: The longitude of the location for which historical air pollution
         data is requested.
-    :arg start: The start time for the historical data query, represented as a Unix timestamp.
-    :arg end: The end time for the historical data query, represented as a Unix timestamp.
-    :arg api_key: Your API key for accessing the OpenWeatherMap API.
+    :param start: The start time for the historical data query, represented as a Unix timestamp.
+    :param end: The end time for the historical data query, represented as a Unix timestamp.
+    :param api_key: Your API key for accessing the OpenWeatherMap API.
     :return: A URL string that can be used to query the OpenWeatherMap API for historical
         air pollution data.
     """
@@ -68,9 +61,9 @@ def fetch_air_pollution(latitudes: List[float],
     Fetches pollution information for a list of latitude and
     longitude pairs using the OpenWeatherMap API.
 
-    :arg latitudes: A list of latitudes for which to fetch pollution information.
-    :arg longitudes: A list of longitudes for which to fetch pollution information.
-    :arg api_key: The API key for accessing the OpenWeatherMap API.
+    :param latitudes: A list of latitudes for which to fetch pollution information.
+    :param longitudes: A list of longitudes for which to fetch pollution information.
+    :param api_key: The API key for accessing the OpenWeatherMap API.
     :return: A list of dictionaries, each containing the pollution information for a given location.
     """
     data = []
@@ -90,11 +83,11 @@ def fetch_previous_air_pollution(latitudes: List[float],
     Fetches all historic pollution information for a list of latitude and
     longitude pairs using the OpenWeatherMap API.
 
-    :arg latitudes: A list of latitudes for which to fetch pollution information.
-    :arg longitudes: A list of longitudes for which to fetch pollution information.
-    :arg api_key: The API key for accessing the OpenWeatherMap API.
-    :arg start: The start time for the historical data query, represented as a Unix timestamp.
-    :arg end: The end time for the historical data query, represented as a Unix timestamp.
+    :param latitudes: A list of latitudes for which to fetch pollution information.
+    :param longitudes: A list of longitudes for which to fetch pollution information.
+    :param api_key: The API key for accessing the OpenWeatherMap API.
+    :param start: The start time for the historical data query, represented as a Unix timestamp.
+    :param end: The end time for the historical data query, represented as a Unix timestamp.
     :return: A list of dictionaries, each containing the pollution information for a given location.
     """
     data = []

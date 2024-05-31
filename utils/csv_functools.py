@@ -1,3 +1,8 @@
+"""
+This module contains functions to store, load and append data to a CSV file.
+"""
+
+
 import csv
 import os
 from typing import Dict, List

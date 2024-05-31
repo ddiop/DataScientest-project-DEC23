@@ -9,9 +9,8 @@ import json
 def store_to_json(data, filename: str = 'example.json') -> None:
     """
     Stores data to a JSON file.
-
-    :arg data: The data to store.
-    :arg filename: The name of the file to store the data in.
+    :param data: The data to store.
+    :param filename: The name of the file to store the data in.
     """
     with open(filename, 'w', encoding='utf-8') as file:
         json.dump(data, file, indent=4)
@@ -20,7 +19,7 @@ def store_to_json(data, filename: str = 'example.json') -> None:
 def load_from_json(filename: str = 'example.json'):
     """
     Loads data from a JSON file.
-    :arg filename: The name of the file to load the data from.
+    :param filename: The name of the file to load the data from.
     :returns: The data loaded from the file.
     """
     with open(filename, 'r', encoding='utf-8') as file:

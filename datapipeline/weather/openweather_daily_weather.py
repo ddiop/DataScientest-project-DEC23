@@ -13,6 +13,7 @@ from utils.openweather_functools import extract_lat_lon
 
 if __name__ == '__main__':
     load_dotenv()
+    dir_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
     verbose = True
 
     api_key = os.getenv('OPEN_WEATHER_API_KEY')
@@ -35,13 +36,13 @@ if __name__ == '__main__':
             weather_dict['lon']).id
 
         if verbose:
-            append_to_json(weather_dict, os.path.join('json', 'DailyWeatherInfo.json'))
+            append_to_json(weather_dict, os.path.join(dir_path, 'json', 'DailyWeatherInfo.json'))
         # Load
         mongo_manager.insert_document('DailyWeather', weather_dict)
 
         # Transform
         weather = previous_daily_weather_data_structure(weather_dict, city_id)
         if verbose:
-            append_to_csv(weather, os.path.join('csv', 'DailyWeatherInfo.csv'))
+            append_to_csv(weather, os.path.join(dir_path, 'csv', 'DailyWeatherInfo.csv'))
         # Load
         postgre_manager.add_record(DailyWeather(**weather))

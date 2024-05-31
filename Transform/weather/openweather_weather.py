@@ -1,3 +1,8 @@
+"""
+This module contains functions to structure the weather information into a dictionary.
+"""
+
+
 from typing import Dict
 
 from utils.openweather_functools import deg_to_cardinal, build_date_timestamp, get_rain_info
@@ -5,6 +10,10 @@ from utils.openweather_functools import deg_to_cardinal, build_date_timestamp, g
 
 def weather_data_structure(weather, city_id) -> Dict:
     """
+    Structure the weather information into a dict.
+    :param weather: Dictionary containing weather information.
+    :param city_id: City ID.
+    :return: Dictionary containing structured weather information.
     """
     return {
         'Date': build_date_timestamp(timestamp=weather['dt'],
@@ -29,6 +38,10 @@ def weather_data_structure(weather, city_id) -> Dict:
 
 def previous_daily_weather_data_structure(weather, city_id) -> Dict:
     """
+    Structure the previous daily weather information into a dict.
+    :param weather: Dictionary containing previous daily weather information.
+    :param city_id: City ID.
+    :return: Dictionary containing structured previous daily weather information.
     """
     return {
         'Date': weather['date'],
@@ -46,6 +59,10 @@ def previous_daily_weather_data_structure(weather, city_id) -> Dict:
 
 def previous_timestamp_weather_data_structure(weather, city_id) -> Dict:
     """
+    Structure the previous timestamp weather information into a dict.
+    :param weather: Dictionary containing previous timestamp weather information.
+    :param city_id: City ID.
+    :return: Dictionary containing structured previous timestamp weather information.
     """
     return {
         'Date': build_date_timestamp(timestamp=weather['data']['dt'],

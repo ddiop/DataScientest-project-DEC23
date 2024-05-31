@@ -1,3 +1,8 @@
+"""
+This module contains utility functions for fetching and processing data
+"""
+
+
 from datetime import datetime, timedelta
 from typing import Dict, List, Tuple, Optional
 
@@ -9,7 +14,7 @@ def fetch_api_data(url: str) -> Dict:
     Fetches data from the given API URL and returns it as a dictionary.
     Raises an exception for non-200 responses.
 
-    :arg url: The URL from which to fetch the data.
+    :param url: The URL from which to fetch the data.
     :return: The data retrieved from the API, parsed into a dictionary.
     :raises ConnectionError: If the API response status code is not 200.
     """
@@ -25,8 +30,8 @@ def extract_lat_lon(data: List[Dict], country_code: str) -> Tuple[List[float], L
     Extracts latitudes and longitudes for locations within
     the specified country from the provided dataset.
 
-    :arg data: A list of dictionaries, each representing a location.
-    :arg country_code: The ISO 3166-1 alpha-2 country code used to filter locations by country.
+    :param data: A list of dictionaries, each representing a location.
+    :param country_code: The ISO 3166-1 alpha-2 country code used to filter locations by country.
     :return: A tuple containing two lists:
         * The first list contains the latitudes of locations within the specified country.
         * The second list contains the longitudes of these locations.
@@ -43,10 +48,9 @@ def build_date_timestamp(timestamp: int, timezone: int = 0, mode: str = 'date') 
     """
     Converts a UNIX timestamp to a formatted date or
     time string based on timezone and mode.
-
-    :arg timestamp: UNIX timestamp.
-    :arg timezone: Timezone offset in seconds.
-    :arg mode: 'date' for date string, 'hours' for time string.
+    :param timestamp: UNIX timestamp.
+    :param timezone: Timezone offset in seconds.
+    :param mode: 'date' for date string, 'hours' for time string.
     :return: Formatted date or time string.
     :raise: NotImplementedError if mode is not 'date' or 'hours'.
     """
@@ -71,7 +75,7 @@ def build_date_timestamp(timestamp: int, timezone: int = 0, mode: str = 'date') 
 def deg_to_cardinal(deg: float) -> str:
     """
     Converts a degree to its corresponding cardinal direction.
-    :arg deg: Degree to be converted.
+    :param deg: Degree to be converted.
     :return: A string representing the cardinal direction.
     """
     directions = [
@@ -88,8 +92,7 @@ def deg_to_cardinal(deg: float) -> str:
 def get_rain_info(data: Optional[Dict[str, Dict[str, float]]] = None) -> float:
     """
     Extracts 1-hour rain volume information from data, if available.
-
-    :arg data: Optional dictionary containing weather data,
+    :param data: Optional dictionary containing weather data,
         including rain information structured as {'rain': {'1h': float}}.
         Defaults to None.
     :return: The volume of rain in the last 1-hour in millimeters.

@@ -9,7 +9,8 @@ from typing import List
 from bs4 import BeautifulSoup
 import pandas as pd
 
-from Extract.australian_meteorology.australian_meteorology_extract import extract_simplified_information, fetch_page_content
+from Extract.australian_meteorology.australian_meteorology_extract import (
+    extract_simplified_information, fetch_page_content)
 
 
 def parse_html_content(soup: BeautifulSoup) -> pd.DataFrame:
@@ -17,7 +18,7 @@ def parse_html_content(soup: BeautifulSoup) -> pd.DataFrame:
     Parses the HTML content with BeautifulSoup and extracts
     the weather data into a DataFrame.
 
-    :arg soup: BeautifulSoup object containing the parsed HTML content.
+    :param soup: BeautifulSoup object containing the parsed HTML content.
     :return: DataFrame containing the extracted weather data.
     """
     # Extract the page header to get location and date information
@@ -69,7 +70,7 @@ def aggregate_weather_data(urls: List[str]) -> pd.DataFrame:
     """
     Aggregates weather data from multiple URLs into a single DataFrame.
 
-    :arg urls: List of URLs to fetch and parse weather data from.
+    :param urls: List of URLs to fetch and parse weather data from.
     :return: Aggregated DataFrame containing weather data from all specified URLs.
     """
     aggregated_df = pd.DataFrame()

@@ -28,6 +28,20 @@ class Weather(Base):
     City_id = Column(Integer, ForeignKey('City.id'))
 
 
+    def __repr__(self):
+        return (f"<Weather(Date={self.Date},"
+                f"Temp={self.Temp},"
+                f"Rainfall={self.Rainfall},"
+                f"Sunrise={self.Sunrise},"
+                f"Sunset={self.Sunset},"
+                f"WindGustDir={self.WindGustDir},"
+                f"WindGustSpeed={self.WindGustSpeed},"
+                f"Cloudiness={self.Cloudiness},"
+                f"Humidity={self.Humidity},"
+                f"Pressure={self.Pressure},"
+                f"City_id={self.City_id})>")
+
+
 class DailyWeather(Base):
     """ Daily Weather table """
     __tablename__ = 'DailyWeather'
@@ -43,6 +57,18 @@ class DailyWeather(Base):
     Humidity = Column(Integer)
     Pressure = Column(Float)
     City_id = Column(Integer, ForeignKey('City.id'))
+
+    def __repr__(self):
+        return (f"<DailyWeather(Date={self.Date},"
+                f"MinTemp={self.MinTemp},"
+                f"MaxTemp={self.MaxTemp},"
+                f"Rainfall={self.Rainfall},"
+                f"WindGustDir={self.WindGustDir},"
+                f"WindGustSpeed={self.WindGustSpeed},"
+                f"Cloudiness={self.Cloudiness},"
+                f"Humidity={self.Humidity},"
+                f"Pressure={self.Pressure},"
+                f"City_id={self.City_id})>")
 
 
 class AirPollution(Base):
@@ -61,6 +87,19 @@ class AirPollution(Base):
     PM10Concentration = Column(Float)
     NH3Concentration = Column(Float)
     City_id = Column(Integer, ForeignKey('City.id'))
+
+    def __repr__(self):
+        return (f"<AirPollution(Date={self.Date},"
+                f"AirQualityIndex={self.AirQualityIndex},"
+                f"COConcentration={self.COConcentration},"
+                f"NOConcentration={self.NOConcentration},"
+                f"NO2Concentration={self.NO2Concentration},"
+                f"O3Concentration={self.O3Concentration},"
+                f"SO2Concentration={self.SO2Concentration},"
+                f"PM25Concentration={self.PM25Concentration},"
+                f"PM10Concentration={self.PM10Concentration},"
+                f"NH3Concentration={self.NH3Concentration},"
+                f"City_id={self.City_id})>")
 
 
 class AustralianMeteorologyWeather(Base):
@@ -90,6 +129,29 @@ class AustralianMeteorologyWeather(Base):
     WindSpeed3pm = Column(Float)
     Pressure3pm = Column(Float)
 
+    def __repr__(self):
+        return (f"<AustralianMeteorologyWeather(Date={self.Date},"
+                f"Location={self.Location},"
+                f"MinTemp={self.MinTemp},"
+                f"MaxTemp={self.MaxTemp},"
+                f"Rainfall={self.Rainfall},"
+                f"Evaporation={self.Evaporation},"
+                f"Sunshine={self.Sunshine},"
+                f"WindGustDir={self.WindGustDir},"
+                f"WindGustSpeed={self.WindGustSpeed},"
+                f"Temp9am={self.Temp9am},"
+                f"Humidity9am={self.Humidity9am},"
+                f"Cloud9am={self.Cloud9am},"
+                f"WindDir9am={self.WindDir9am},"
+                f"WindSpeed9am={self.WindSpeed9am},"
+                f"Pressure9am={self.Pressure9am},"
+                f"Temp3pm={self.Temp3pm},"
+                f"Humidity3pm={self.Humidity3pm},"
+                f"Cloud3pm={self.Cloud3pm},"
+                f"WindDir3pm={self.WindDir3pm},"
+                f"WindSpeed3pm={self.WindSpeed3pm},"
+                f"Pressure3pm={self.Pressure3pm})>")
+
 
 class City(Base):
     """ City table """
@@ -100,6 +162,12 @@ class City(Base):
     Country = Column(String)
     Latitude = Column(Float)
     Longitude = Column(Float)
+
+    def __repr__(self):
+        return (f"<City(Name={self.Name},"
+                f"Country={self.Country},"
+                f"Latitude={self.Latitude},"
+                f"Longitude={self.Longitude})>")
 
 
 class PostgreSQLManager:

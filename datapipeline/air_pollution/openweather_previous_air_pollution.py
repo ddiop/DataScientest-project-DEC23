@@ -13,6 +13,7 @@ from utils.openweather_functools import extract_lat_lon
 
 if __name__ == '__main__':
     load_dotenv()
+    dir_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
     verbose = True
 
     api_key = os.getenv('OPEN_WEATHER_API_KEY')
@@ -34,7 +35,7 @@ if __name__ == '__main__':
             air_pollution_dict['coord']['lon']).id
 
         if verbose:
-            append_to_json(air_pollution_dict, os.path.join('json', 'AirPollutionInfo.json'))
+            append_to_json(air_pollution_dict, os.path.join(dir_path, 'json', 'AirPollutionInfo.json'))
         # Load
         mongo_manager.insert_document('AirPollution', air_pollution_dict)
 
@@ -43,5 +44,6 @@ if __name__ == '__main__':
         # Load
         for i in range(len(air_pollution_df)):
             if verbose:
-                append_to_csv(data=air_pollution_df.to_dict('records')[i], filename=os.path.join('csv', 'AirPollutionInfo.csv'))
+                append_to_csv(data=air_pollution_df.to_dict('records')[i],
+                              filename=os.path.join('dir_path, csv', 'AirPollutionInfo.csv'))
             postgre_manager.add_record(AirPollution(**air_pollution_df.to_dict('records')[i]))
