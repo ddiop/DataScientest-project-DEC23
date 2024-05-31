@@ -24,7 +24,7 @@ if __name__ == '__main__':
     postgre_manager = PostgreSQLManager()
 
     # Extract
-    cities = mongo_manager.find_documents('City', {'country': country_code})
+    cities = mongo_manager.find_documents('city', {'country': country_code})
     latitudes, longitudes = extract_lat_lon(cities, country_code)
     air_pollution = fetch_previous_air_pollution(latitudes, longitudes, api_key,
                                                  start=1606435200, end=1709485840)
@@ -35,9 +35,9 @@ if __name__ == '__main__':
             air_pollution_dict['coord']['lon']).id
 
         if verbose:
-            append_to_json(air_pollution_dict, os.path.join(dir_path, 'json', 'AirPollutionInfo.json'))
+            append_to_json(air_pollution_dict, os.path.join(dir_path, 'json', 'airPollutionInfo.json'))
         # Load
-        mongo_manager.insert_document('AirPollution', air_pollution_dict)
+        mongo_manager.insert_document('airPollution', air_pollution_dict)
 
         # Transform
         air_pollution_df = previous_air_pollution_data_structure(air_pollution_dict, city_id)
@@ -45,5 +45,5 @@ if __name__ == '__main__':
         for i in range(len(air_pollution_df)):
             if verbose:
                 append_to_csv(data=air_pollution_df.to_dict('records')[i],
-                              filename=os.path.join('dir_path, csv', 'AirPollutionInfo.csv'))
+                              filename=os.path.join('dir_path, csv', 'airPollutionInfo.csv'))
             postgre_manager.add_record(AirPollution(**air_pollution_df.to_dict('records')[i]))

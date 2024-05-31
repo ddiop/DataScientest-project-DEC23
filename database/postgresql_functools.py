@@ -12,162 +12,162 @@ Base = declarative_base()
 
 class Weather(Base):
     """ Weather table """
-    __tablename__ = 'Weather'
+    __tablename__ = 'weather'
 
     id = Column(Integer, primary_key=True)
-    Date = Column(DateTime)
-    Temp = Column(Float)
-    Rainfall = Column(Float)
-    Sunrise = Column(Time)
-    Sunset = Column(Time)
-    WindGustDir = Column(String)
-    WindGustSpeed = Column(Float)
-    Cloudiness = Column(Integer)
-    Humidity = Column(Integer)
-    Pressure = Column(Float)
-    City_id = Column(Integer, ForeignKey('City.id'))
+    date = Column(DateTime)
+    temp = Column(Float)
+    rainfall = Column(Float)
+    sunrise = Column(Time)
+    sunset = Column(Time)
+    wind_gust_dir = Column(String)
+    wind_gust_speed = Column(Float)
+    cloudiness = Column(Integer)
+    humidity = Column(Integer)
+    pressure = Column(Float)
+    city_id = Column(Integer, ForeignKey('city.id'))
 
 
     def __repr__(self):
-        return (f"<Weather(Date={self.Date},"
-                f"Temp={self.Temp},"
-                f"Rainfall={self.Rainfall},"
-                f"Sunrise={self.Sunrise},"
-                f"Sunset={self.Sunset},"
-                f"WindGustDir={self.WindGustDir},"
-                f"WindGustSpeed={self.WindGustSpeed},"
-                f"Cloudiness={self.Cloudiness},"
-                f"Humidity={self.Humidity},"
-                f"Pressure={self.Pressure},"
-                f"City_id={self.City_id})>")
+        return (f"<Weather(Date={self.date},"
+                f"Temp={self.temp},"
+                f"Rainfall={self.rainfall},"
+                f"Sunrise={self.sunrise},"
+                f"Sunset={self.sunset},"
+                f"WindGustDir={self.wind_gust_dir},"
+                f"WindGustSpeed={self.wind_gust_speed},"
+                f"Cloudiness={self.cloudiness},"
+                f"Humidity={self.humidity},"
+                f"Pressure={self.pressure},"
+                f"City_id={self.city_id})>")
 
 
 class DailyWeather(Base):
     """ Daily Weather table """
-    __tablename__ = 'DailyWeather'
+    __tablename__ = 'daily_weather'
 
     id = Column(Integer, primary_key=True)
-    Date = Column(DateTime)
-    MinTemp = Column(Float)
-    MaxTemp = Column(Float)
-    Rainfall = Column(Float)
-    WindGustDir = Column(String)
-    WindGustSpeed = Column(Float)
-    Cloudiness = Column(Integer)
-    Humidity = Column(Integer)
-    Pressure = Column(Float)
-    City_id = Column(Integer, ForeignKey('City.id'))
+    date = Column(DateTime)
+    min_temp = Column(Float)
+    max_temp = Column(Float)
+    rainfall = Column(Float)
+    wind_gust_dir = Column(String)
+    wind_gust_speed = Column(Float)
+    cloudiness = Column(Integer)
+    humidity = Column(Integer)
+    pressure = Column(Float)
+    city_id = Column(Integer, ForeignKey('city.id'))
 
     def __repr__(self):
-        return (f"<DailyWeather(Date={self.Date},"
-                f"MinTemp={self.MinTemp},"
-                f"MaxTemp={self.MaxTemp},"
-                f"Rainfall={self.Rainfall},"
-                f"WindGustDir={self.WindGustDir},"
-                f"WindGustSpeed={self.WindGustSpeed},"
-                f"Cloudiness={self.Cloudiness},"
-                f"Humidity={self.Humidity},"
-                f"Pressure={self.Pressure},"
-                f"City_id={self.City_id})>")
+        return (f"<DailyWeather(Date={self.date},"
+                f"MinTemp={self.min_temp},"
+                f"MaxTemp={self.max_temp},"
+                f"Rainfall={self.rainfall},"
+                f"WindGustDir={self.wind_gust_dir},"
+                f"WindGustSpeed={self.wind_gust_speed},"
+                f"Cloudiness={self.cloudiness},"
+                f"Humidity={self.humidity},"
+                f"Pressure={self.pressure},"
+                f"City_id={self.city_id})>")
 
 
 class AirPollution(Base):
     """ Air Pollution table"""
-    __tablename__ = 'AirPollution'
+    __tablename__ = 'air_pollution'
 
     id = Column(Integer, primary_key=True)
-    Date = Column(DateTime)
-    AirQualityIndex = Column(Integer)
-    COConcentration = Column(Float)
-    NOConcentration = Column(Float)
-    NO2Concentration = Column(Float)
-    O3Concentration = Column(Float)
-    SO2Concentration = Column(Float)
-    PM25Concentration = Column(Float)
-    PM10Concentration = Column(Float)
-    NH3Concentration = Column(Float)
-    City_id = Column(Integer, ForeignKey('City.id'))
+    date = Column(DateTime)
+    air_quality_index = Column(Integer)
+    co_concentration = Column(Float)
+    no_concentration = Column(Float)
+    no2_concentration = Column(Float)
+    o3_concentration = Column(Float)
+    so2_concentration = Column(Float)
+    pm25_concentration = Column(Float)
+    pm10_concentration = Column(Float)
+    nh3_concentration = Column(Float)
+    city_id = Column(Integer, ForeignKey('city.id'))
 
     def __repr__(self):
         return (f"<AirPollution(Date={self.Date},"
-                f"AirQualityIndex={self.AirQualityIndex},"
-                f"COConcentration={self.COConcentration},"
-                f"NOConcentration={self.NOConcentration},"
-                f"NO2Concentration={self.NO2Concentration},"
-                f"O3Concentration={self.O3Concentration},"
-                f"SO2Concentration={self.SO2Concentration},"
-                f"PM25Concentration={self.PM25Concentration},"
-                f"PM10Concentration={self.PM10Concentration},"
-                f"NH3Concentration={self.NH3Concentration},"
-                f"City_id={self.City_id})>")
+                f"AirQualityIndex={self.air_qualityIndex},"
+                f"COConcentration={self.co_concentration},"
+                f"NOConcentration={self.no_concentration},"
+                f"NO2Concentration={self.no2_concentration},"
+                f"O3Concentration={self.o3_concentration},"
+                f"SO2Concentration={self.so2_concentration},"
+                f"PM25Concentration={self.pm25_concentration},"
+                f"PM10Concentration={self.pm10_concentration},"
+                f"NH3Concentration={self.nh3_concentration},"
+                f"City_id={self.city_id})>")
 
 
 class AustralianMeteorologyWeather(Base):
     """ Australian Meteorology Weather table """
-    __tablename__ = 'AustralianMeteorologyWeather'
+    __tablename__ = 'australian_meteorology_weather'
 
     id = Column(Integer, primary_key=True)
-    Date = Column(Date)
-    Location = Column(String)
-    MinTemp = Column(Float)
-    MaxTemp = Column(Float)
-    Rainfall = Column(Float)
-    Evaporation = Column(Float)
-    Sunshine = Column(Float)
-    WindGustDir = Column(String)
-    WindGustSpeed = Column(Float)
-    Temp9am = Column(Float)
-    Humidity9am = Column(Float)
-    Cloud9am = Column(Float)
-    WindDir9am = Column(String)
-    WindSpeed9am = Column(Float)
-    Pressure9am = Column(Float)
-    Temp3pm = Column(Float)
-    Humidity3pm = Column(Float)
-    Cloud3pm = Column(Float)
-    WindDir3pm = Column(String)
-    WindSpeed3pm = Column(Float)
-    Pressure3pm = Column(Float)
+    date = Column(Date)
+    location = Column(String)
+    min_temp = Column(Float)
+    max_temp = Column(Float)
+    rainfall = Column(Float)
+    evaporation = Column(Float)
+    sunshine = Column(Float)
+    wind_gust_dir = Column(String)
+    wind_gust_speed = Column(Float)
+    temp_9am = Column(Float)
+    humidity_9am = Column(Float)
+    cloud_9am = Column(Float)
+    wind_dir_9am = Column(String)
+    wind_speed_9am = Column(Float)
+    pressure_9am = Column(Float)
+    temp_3pm = Column(Float)
+    humidity_3pm = Column(Float)
+    cloud_3pm = Column(Float)
+    wind_dir_3pm = Column(String)
+    wind_speed_3pm = Column(Float)
+    pressure_3pm = Column(Float)
 
     def __repr__(self):
-        return (f"<AustralianMeteorologyWeather(Date={self.Date},"
-                f"Location={self.Location},"
-                f"MinTemp={self.MinTemp},"
-                f"MaxTemp={self.MaxTemp},"
-                f"Rainfall={self.Rainfall},"
-                f"Evaporation={self.Evaporation},"
-                f"Sunshine={self.Sunshine},"
-                f"WindGustDir={self.WindGustDir},"
-                f"WindGustSpeed={self.WindGustSpeed},"
-                f"Temp9am={self.Temp9am},"
-                f"Humidity9am={self.Humidity9am},"
-                f"Cloud9am={self.Cloud9am},"
-                f"WindDir9am={self.WindDir9am},"
-                f"WindSpeed9am={self.WindSpeed9am},"
-                f"Pressure9am={self.Pressure9am},"
-                f"Temp3pm={self.Temp3pm},"
-                f"Humidity3pm={self.Humidity3pm},"
-                f"Cloud3pm={self.Cloud3pm},"
-                f"WindDir3pm={self.WindDir3pm},"
-                f"WindSpeed3pm={self.WindSpeed3pm},"
-                f"Pressure3pm={self.Pressure3pm})>")
+        return (f"<AustralianMeteorologyWeather(Date={self.date},"
+                f"Location={self.location},"
+                f"MinTemp={self.min_temp},"
+                f"MaxTemp={self.max_temp},"
+                f"Rainfall={self.rainfall},"
+                f"Evaporation={self.evaporation},"
+                f"Sunshine={self.sunshine},"
+                f"WindGustDir={self.wind_gust_dir},"
+                f"WindGustSpeed={self.wind_gust_speed},"
+                f"Temp9am={self.temp_9am},"
+                f"Humidity9am={self.humidity_9am},"
+                f"Cloud9am={self.cloud_9am},"
+                f"WindDir9am={self.wind_dir_9am},"
+                f"WindSpeed9am={self.wind_speed_9am},"
+                f"Pressure9am={self.pressure_9am},"
+                f"Temp3pm={self.temp_3pm},"
+                f"Humidity3pm={self.humidity_3pm},"
+                f"Cloud3pm={self.cloud_3pm},"
+                f"WindDir3pm={self.wind_dir_3pm},"
+                f"WindSpeed3pm={self.wind_speed_3pm},"
+                f"Pressure3pm={self.pressure_3pm})>")
 
 
 class City(Base):
     """ City table """
-    __tablename__ = 'City'
+    __tablename__ = 'city'
 
     id = Column(Integer, primary_key=True)
-    Name = Column(String)
-    Country = Column(String)
-    Latitude = Column(Float)
-    Longitude = Column(Float)
+    name = Column(String)
+    country = Column(String)
+    latitude = Column(Float)
+    longitude = Column(Float)
 
     def __repr__(self):
-        return (f"<City(Name={self.Name},"
-                f"Country={self.Country},"
-                f"Latitude={self.Latitude},"
-                f"Longitude={self.Longitude})>")
+        return (f"<City(Name={self.name},"
+                f"Country={self.country},"
+                f"Latitude={self.latitude},"
+                f"Longitude={self.longitude})>")
 
 
 class PostgreSQLManager:
@@ -205,7 +205,7 @@ class PostgreSQLManager:
     def fetch_city_record_by_coord(self, lat, lon):
         """ Fetch the nearest record from table City based on latitude and longitude """
         return (self.session.query(City)
-                .order_by(func.abs(City.Latitude - lat), func.abs(City.Longitude - lon))
+                .order_by(func.abs(City.latitude - lat), func.abs(City.longitude - lon))
                 .first())
 
 

@@ -48,13 +48,13 @@ def parse_html_content(soup: BeautifulSoup) -> pd.DataFrame:
                        .strftime("%Y-%m-%d") for day in days]
 
     # Define the columns for the DataFrame
-    columns = ['Day', 'MinTemp', 'MaxTemp', 'Rainfall',
-               'Evaporation', 'Sunshine', 'WindGustDir',
-               'WindGustSpeed', 'WindGustTime', 'Temp9am',
-               'Humidity9am', 'Cloud9am', 'WindDir9am',
-               'WindSpeed9am', 'Pressure9am', 'Temp3pm',
-               'Humidity3pm', 'Cloud3pm', 'WindDir3pm',
-               'WindSpeed3pm', 'Pressure3pm']
+    columns = ['day', 'min_temp', 'max_temp', 'rainfall',
+               'evaporation', 'sunshine', 'wind_gust_dir',
+               'wind_gust_speed', 'wind_gust_time', 'temp_9am',
+               'humidity_9am', 'cloud_9am', 'wind_dir_9am',
+               'wind_speed_9am', 'pressure_9am', 'temp_3pm',
+               'humidity_3pm', 'cloud_3pm', 'wind_dir_3pm',
+               'wind_speed_3pm', 'pressure_3pm']
     df = pd.DataFrame(data, columns=columns)
 
     # Drop unnecessary columns

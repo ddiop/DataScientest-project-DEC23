@@ -26,7 +26,7 @@ if __name__ == '__main__':
     postgre_manager = PostgreSQLManager()
 
     # Extract
-    cities = mongo_manager.find_documents('City', {'country': country_code})
+    cities = mongo_manager.find_documents('city', {'country': country_code})
     latitudes, longitudes = extract_lat_lon(cities, country_code)
     weather = fetch_daily_weather(latitudes, longitudes, api_key, date)
 
@@ -36,13 +36,13 @@ if __name__ == '__main__':
             weather_dict['lon']).id
 
         if verbose:
-            append_to_json(weather_dict, os.path.join(dir_path, 'json', 'DailyWeatherInfo.json'))
+            append_to_json(weather_dict, os.path.join(dir_path, 'json', 'dailyWeatherInfo.json'))
         # Load
-        mongo_manager.insert_document('DailyWeather', weather_dict)
+        mongo_manager.insert_document('dailyWeather', weather_dict)
 
         # Transform
         weather = previous_daily_weather_data_structure(weather_dict, city_id)
         if verbose:
-            append_to_csv(weather, os.path.join(dir_path, 'csv', 'DailyWeatherInfo.csv'))
+            append_to_csv(weather, os.path.join(dir_path, 'csv', 'dailyWeatherInfo.csv'))
         # Load
         postgre_manager.add_record(DailyWeather(**weather))

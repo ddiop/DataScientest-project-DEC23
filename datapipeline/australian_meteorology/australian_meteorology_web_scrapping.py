@@ -35,7 +35,8 @@ if __name__ == '__main__':
 
     # Save the weather data to a CSV file
     if verbose:
-        weather_df.to_csv(os.path.join(dir_path, 'csv', 'AustralianMeteorologyWeatherInfo.csv'), index=False)
+        weather_df.to_csv(os.path.join(dir_path, 'csv', 'australianMeteorologyWeatherInfo.csv'),
+                          index=False)
 
     # Store the weather data to PostgreSQL database
     postgre_manager = PostgreSQLManager()

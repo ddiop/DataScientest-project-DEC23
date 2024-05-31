@@ -1,0 +1,44 @@
+{
+    "coord": {
+        "lon": 149.1013,
+        "lat": -35.2976
+    },
+    "weather": [
+        {
+            "id": 804,
+            "main": "Clouds",
+            "description": "overcast clouds",
+            "icon": "04n"
+        }
+    ],
+    "base": "stations",
+    "main": {
+        "temp": 2.96,
+        "feels_like": 1.81,
+        "temp_min": 2.39,
+        "temp_max": 4.59,
+        "pressure": 1023,
+        "humidity": 94
+    },
+    "visibility": 10000,
+    "wind": {
+        "speed": 1.37,
+        "deg": 183,
+        "gust": 1.32
+    },
+    "clouds": {
+        "all": 100
+    },
+    "dt": 1717178639,
+    "sys": {
+        "type": 2,
+        "id": 2004200,
+        "country": "AU",
+        "sunrise": 1717189422,
+        "sunset": 1717225169
+    },
+    "timezone": 36000,
+    "id": 2172517,
+    "name": "Canberra",
+    "cod": 200
+}

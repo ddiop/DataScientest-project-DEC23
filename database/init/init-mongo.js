@@ -6,7 +6,7 @@ db.createUser({
 });
 
 db = db.getSiblingDB("opendb");
-db.createCollection("City");
-db.createCollection("Weather");
-db.createCollection("DailyWeather");
-db.createCollection("AirPollution");
+db.createCollection("city");
+db.createCollection("weather");
+db.createCollection("dailyWeather");
+db.createCollection("airPollution");

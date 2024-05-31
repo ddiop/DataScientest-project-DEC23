@@ -16,23 +16,23 @@ def weather_data_structure(weather, city_id) -> Dict:
     :return: Dictionary containing structured weather information.
     """
     return {
-        'Date': build_date_timestamp(timestamp=weather['dt'],
+        'date': build_date_timestamp(timestamp=weather['dt'],
                                      timezone=weather['timezone'],
                                      mode='datetime'),
-        'Temp': weather['main']['temp'],
-        'Rainfall': get_rain_info(weather),
-        'Sunrise': build_date_timestamp(timestamp=weather['sys']['sunrise'],
+        'temp': weather['main']['temp'],
+        'rainfall': get_rain_info(weather),
+        'sunrise': build_date_timestamp(timestamp=weather['sys']['sunrise'],
                                         timezone=weather['timezone'],
                                         mode='hours'),
-        'Sunset': build_date_timestamp(timestamp=weather['sys']['sunset'],
+        'sunset': build_date_timestamp(timestamp=weather['sys']['sunset'],
                                        timezone=weather['timezone'],
                                        mode='hours'),
-        'WindGustDir': deg_to_cardinal(weather['wind']['deg']),
-        'WindGustSpeed': weather['wind']['speed'],
-        'Cloudiness': weather['clouds']['all'],
-        'Humidity': weather['main']['humidity'],
-        'Pressure': weather['main']['pressure'],
-        'City_id': city_id
+        'wind_gust_dir': deg_to_cardinal(weather['wind']['deg']),
+        'wind_gust_speed': weather['wind']['speed'],
+        'cloudiness': weather['clouds']['all'],
+        'humidity': weather['main']['humidity'],
+        'pressure': weather['main']['pressure'],
+        'city_id': city_id
     }
 
 
@@ -44,16 +44,16 @@ def previous_daily_weather_data_structure(weather, city_id) -> Dict:
     :return: Dictionary containing structured previous daily weather information.
     """
     return {
-        'Date': weather['date'],
-        'MinTemp': weather['temperature']['min'],
-        'MaxTemp': weather['temperature']['max'],
-        'Rainfall': weather['precipitation']['total'],
-        'WindGustDir': deg_to_cardinal(weather['wind']['max']['direction']),
-        'WindGustSpeed': weather['wind']['max']['speed'],
-        'Cloudiness': weather['cloud_cover']['afternoon'],
-        'Humidity': weather['humidity']['afternoon'],
-        'Pressure': weather['pressure']['afternoon'],
-        'City_id': city_id
+        'date': weather['date'],
+        'min_temp': weather['temperature']['min'],
+        'max_temp': weather['temperature']['max'],
+        'rainfall': weather['precipitation']['total'],
+        'wind_gust_dir': deg_to_cardinal(weather['wind']['max']['direction']),
+        'wind_gust_speed': weather['wind']['max']['speed'],
+        'cloudiness': weather['cloud_cover']['afternoon'],
+        'humidity': weather['humidity']['afternoon'],
+        'pressure': weather['pressure']['afternoon'],
+        'city_id': city_id
     }
 
 
@@ -65,21 +65,21 @@ def previous_timestamp_weather_data_structure(weather, city_id) -> Dict:
     :return: Dictionary containing structured previous timestamp weather information.
     """
     return {
-        'Date': build_date_timestamp(timestamp=weather['data']['dt'],
+        'date': build_date_timestamp(timestamp=weather['data']['dt'],
                                      timezone=weather['timezone_offset'],
                                      mode='datetime'),
-        'Temp': weather['data']['temp'],
-        'Rainfall': get_rain_info(weather['data']),
-        'Sunrise': build_date_timestamp(timestamp=weather['data']['sunrise'],
+        'temp': weather['data']['temp'],
+        'rainfall': get_rain_info(weather['data']),
+        'sunrise': build_date_timestamp(timestamp=weather['data']['sunrise'],
                                         timezone=weather['timezone_offset'],
                                         mode='hours'),
-        'Sunset': build_date_timestamp(timestamp=weather['data']['sunset'],
+        'sunset': build_date_timestamp(timestamp=weather['data']['sunset'],
                                        timezone=weather['timezone_offset'],
                                        mode='hours'),
-        'WindGustDir': deg_to_cardinal(weather['data']['wind_deg']),
-        'WindGustSpeed': weather['data']['wind_speed'],
-        'Cloudiness': weather['data']['clouds'],
-        'Humidity': weather['data']['humidity'],
-        'Pressure': weather['data']['pressure'],
-        'City_id': city_id
+        'wind_gust_dir': deg_to_cardinal(weather['data']['wind_deg']),
+        'wind_gust_speed': weather['data']['wind_speed'],
+        'cloudiness': weather['data']['clouds'],
+        'humidity': weather['data']['humidity'],
+        'pressure': weather['data']['pressure'],
+        'city_id': city_id
     }

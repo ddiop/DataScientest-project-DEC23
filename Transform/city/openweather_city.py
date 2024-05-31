@@ -14,8 +14,8 @@ def city_data_structure(city_info) -> Dict:
     :return: DataFrame containing structured city information.
     """
     return {
-        'Name': city_info['name'],
-        'Country': city_info['country'],
-        'Latitude': city_info['lat'],
-        'Longitude': city_info['lon']
+        'name': city_info['name'],
+        'country': city_info['country'],
+        'latitude': city_info['lat'],
+        'longitude': city_info['lon']
     }
