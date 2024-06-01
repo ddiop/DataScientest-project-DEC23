@@ -57,3 +57,6 @@ def load_weather_to_datawarehouse():
             if verbose:
                 append_to_csv(weather, os.path.join(dir_path, 'dataCsv', 'weatherInfo.csv'))
             postgre_manager.add_record(Weather(**weather))
+
+
+load_weather_to_datawarehouse()

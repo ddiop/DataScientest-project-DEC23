@@ -31,7 +31,7 @@ if __name__ == '__main__':
 
     # Aggregate the weather data
     weather_df = aggregate_weather_data(pages_to_scrape)
-    for col in ['WindGustDir', 'WindDir9am', 'WindDir3pm']:
+    for col in ['wind_gust_dir', 'wind_dir_9am', 'wind_dir_3pm']:
         weather_df[col] = weather_df[col].replace({-1: 'NA'})
 
     # Save the weather data to a CSV file

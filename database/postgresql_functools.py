@@ -6,7 +6,6 @@ from sqlalchemy import (create_engine, ForeignKey, Column, Integer, String,
                         Float, Date, Time, DateTime, func)
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-
 Base = declarative_base()
 
 
@@ -27,7 +26,6 @@ class Weather(Base):
     pressure = Column(Float)
     city_id = Column(Integer, ForeignKey('city.id'))
 
-
     def __repr__(self):
         return (f"<Weather(Date={self.date},"
                 f"Temp={self.temp},"
@@ -47,7 +45,7 @@ class DailyWeather(Base):
     __tablename__ = 'daily_weather'
 
     id = Column(Integer, primary_key=True)
-    date = Column(DateTime)
+    date = Column(Date)
     min_temp = Column(Float)
     max_temp = Column(Float)
     rainfall = Column(Float)
@@ -89,8 +87,8 @@ class AirPollution(Base):
     city_id = Column(Integer, ForeignKey('city.id'))
 
     def __repr__(self):
-        return (f"<AirPollution(Date={self.Date},"
-                f"AirQualityIndex={self.air_qualityIndex},"
+        return (f"<AirPollution(Date={self.date},"
+                f"AirQualityIndex={self.air_quality_index},"
                 f"COConcentration={self.co_concentration},"
                 f"NOConcentration={self.no_concentration},"
                 f"NO2Concentration={self.no2_concentration},"

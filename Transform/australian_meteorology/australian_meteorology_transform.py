@@ -6,8 +6,8 @@ This module contains functions to transform the Australian meteorology data
 from datetime import datetime
 from typing import List
 
-from bs4 import BeautifulSoup
 import pandas as pd
+from bs4 import BeautifulSoup
 
 from Extract.australian_meteorology.australian_meteorology_extract import (
     extract_simplified_information, fetch_page_content)
@@ -58,10 +58,10 @@ def parse_html_content(soup: BeautifulSoup) -> pd.DataFrame:
     df = pd.DataFrame(data, columns=columns)
 
     # Drop unnecessary columns
-    df.drop(['Day', 'WindGustTime'], axis=1, inplace=True)
+    df.drop(['day', 'wind_gust_time'], axis=1, inplace=True)
 
-    df['Date'] = formatted_dates
-    df['Location'] = location
+    df['date'] = formatted_dates
+    df['location'] = location
 
     return df
 
