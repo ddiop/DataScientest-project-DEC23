@@ -1,0 +1,4 @@
+date,min_temp,max_temp,rainfall,wind_gust_dir,wind_gust_speed,cloudiness,humidity,pressure,city_id
+2021-03-13,14.33,28.77,7.03,NW,6.17,40.0,64.0,1015.0,1
+2021-03-14,9.6,20.41,0.11,S,5.14,90.0,93.0,1018.0,1
+2021-03-15,4.84,21.83,0.0,ESE,3.6,74.0,47.0,1024.0,1

@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 from dotenv import load_dotenv
 
@@ -6,14 +7,13 @@ from Extract.weather.openweather_weather import fetch_current_weather
 from Transform.weather.openweather_weather import weather_data_structure
 from database.mongodb_functools import MongoDBManager
 from database.postgresql_functools import PostgreSQLManager, Weather
-from utils.json_functools import append_to_json
 from utils.csv_functools import append_to_csv
+from utils.json_functools import append_to_json
 from utils.openweather_functools import extract_lat_lon
-
 
 if __name__ == '__main__':
     load_dotenv()
-    dir_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+    dir_path = Path(__file__).parents[2]
     verbose = True
 
     api_key = os.getenv('OPEN_WEATHER_API_KEY')
@@ -34,13 +34,13 @@ if __name__ == '__main__':
             weather_dict['coord']['lon']).id
 
         if verbose:
-            append_to_json(weather_dict, os.path.join(dir_path, 'json', 'weatherInfo.json'))
+            append_to_json(weather_dict, os.path.join(dir_path, 'dataJson', 'weatherInfo.json'))
         # Load
         mongo_manager.insert_document('weather', weather_dict)
 
         # Transform
         weather = weather_data_structure(weather_dict, city_id)
         if verbose:
-            append_to_csv(weather, os.path.join(dir_path, 'csv', 'weatherInfo.csv'))
+            append_to_csv(weather, os.path.join(dir_path, 'dataCsv', 'weatherInfo.csv'))
         # Load
         postgre_manager.add_record(Weather(**weather))
