@@ -39,7 +39,7 @@ if __name__ == '__main__':
             append_to_json(weather_dict,
                            os.path.join(dir_path, 'dataJson', 'dailyWeatherInfo.json'))
         # Load
-        mongo_manager.insert_document('dailyWeather', weather_dict)
+        mongo_manager.insert_document('daily_weather', weather_dict)
 
         # Transform
         weather = previous_daily_weather_data_structure(weather_dict, city_id)

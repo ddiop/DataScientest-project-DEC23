@@ -1,12 +1,12 @@
 db = db.getSiblingDB("admin");
 db.createUser({
-  user: "openuser",
-  pwd: "openpassword",
-  roles: [ { role: "readWrite", db: "opendb" } ]
+  user: process.env.MONGO_USER,
+  pwd: process.env.MONGO_PASSWORD,
+  roles: [ { role: "readWrite", db: process.env.MONGO_INITDB_DATABASE } ]
 });
 
-db = db.getSiblingDB("opendb");
+db = db.getSiblingDB(process.env.MONGO_INITDB_DATABASE);
 db.createCollection("city");
 db.createCollection("weather");
-db.createCollection("dailyWeather");
-db.createCollection("airPollution");
+db.createCollection("daily_weather");
+db.createCollection("air_pollution");

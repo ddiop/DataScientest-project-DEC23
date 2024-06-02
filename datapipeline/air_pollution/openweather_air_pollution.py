@@ -37,7 +37,7 @@ if __name__ == '__main__':
             append_to_json(air_pollution_dict,
                            os.path.join(dir_path, 'dataJson', 'airPollutionInfo.json'))
         # Load
-        mongo_manager.insert_document('airPollution', air_pollution_dict)
+        mongo_manager.insert_document('air_pollution', air_pollution_dict)
 
         # Transform
         air_pollution = air_pollution_data_structure(air_pollution_dict, city_id)

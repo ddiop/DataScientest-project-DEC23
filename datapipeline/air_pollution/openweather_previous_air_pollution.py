@@ -38,7 +38,7 @@ if __name__ == '__main__':
             append_to_json(air_pollution_dict,
                            os.path.join(dir_path, 'dataJson', 'airPollutionInfo.json'))
         # Load
-        mongo_manager.insert_document('airPollution', air_pollution_dict)
+        mongo_manager.insert_document('air_pollution', air_pollution_dict)
 
         # Transform
         air_pollution_df = previous_air_pollution_data_structure(air_pollution_dict, city_id)
@@ -46,5 +46,5 @@ if __name__ == '__main__':
         for i in range(len(air_pollution_df)):
             if verbose:
                 append_to_csv(data=air_pollution_df.to_dict('records')[i],
-                              filename=os.path.join('dir_path, dataCsv', 'airPollutionInfo.csv'))
+                              filename=os.path.join(dir_path, 'dataCsv', 'airPollutionInfo.csv'))
             postgre_manager.add_record(AirPollution(**air_pollution_df.to_dict('records')[i]))

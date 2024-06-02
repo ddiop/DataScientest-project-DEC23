@@ -8,9 +8,9 @@ from utils.json_functools import load_from_json
 
 def load_city():
     mongo_manager = MongoDBManager()
-    [mongo_manager.insert_document('City', city)
-     for city in load_from_json(os.path.join('dataJson', 'CityInfo.json'))]
+    [mongo_manager.insert_document('city', city)
+     for city in load_from_json(os.path.join('dataJson', 'cityInfo.json'))]
 
     postgre_manager = PostgreSQLManager()
     [postgre_manager.add_record(City(**city))
-     for city in load_from_csv(os.path.join('dataCsv', 'CityInfo.csv'))]
+     for city in load_from_csv(os.path.join('dataCsv', 'cityInfo.csv'))]

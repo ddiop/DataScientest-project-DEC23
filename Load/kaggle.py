@@ -25,6 +25,8 @@ def load_kaggle_to_datawarehouse():
                             'Temp3pm': 'temp_3pm'})
     [postgre_manager.add_record(AustralianMeteorologyWeather(**weather))
      for weather in df.to_dict(orient='records')]
+    df.to_csv(os.path.join(dir_path, 'dataCsv', 'australianMeteorologyWeatherInfo.csv'),
+              index=False)
 
 
 load_kaggle_to_datawarehouse()

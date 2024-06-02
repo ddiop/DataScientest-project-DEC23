@@ -2,8 +2,8 @@
 This module contains functions for saving and loading data to and from JSON files.
 """
 
-import os
 import json
+import os
 
 
 def store_to_json(data, filename: str = 'example.json') -> None:
@@ -33,11 +33,6 @@ def append_to_json(data, filename: str = 'example.json') -> None:
     :param data: The data to append.
     :param filename: The name of the file to append the data to.
     """
-    if os.path.exists(filename):
-        temp = load_from_json(filename)
-        if isinstance(temp, list):
-            temp.append(data)
-    else:
-        temp = data
-
+    temp = load_from_json(filename) if os.path.exists(filename) else []
+    temp.extend(data if isinstance(data, list) else [data])
     store_to_json(temp, filename)

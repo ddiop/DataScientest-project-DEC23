@@ -24,12 +24,12 @@ if __name__ == '__main__':
     postgre_manager = PostgreSQLManager()
 
     for city_name in locations:
-        city_json = fetch_api_data(build_city_url(city_name, api_key))[0]
+        city_json = fetch_api_data(build_city_url(city_name, api_key))
         if verbose:
             append_to_json(city_json, os.path.join(dir_path, 'dataJson', 'cityInfo.json'))
-        mongo_manager.insert_document('city', city_json)
+        mongo_manager.insert_document('city', city_json[0])
 
-        city = city_data_structure(city_json)
+        city = city_data_structure(city_json[0])
         if verbose:
             append_to_csv(city, os.path.join(dir_path, 'dataCsv', 'cityInfo.csv'))
         postgre_manager.add_record(City(**city))

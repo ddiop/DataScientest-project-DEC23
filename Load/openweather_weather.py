@@ -13,7 +13,7 @@ from utils.json_functools import append_to_json, load_from_json
 
 def load_weather():
     mongo_manager = MongoDBManager()
-    [mongo_manager.insert_document('Weather', weather)
+    [mongo_manager.insert_document('weather', weather)
      for weather in load_from_json(os.path.join('dataJson', 'WeatherInfo.json'))]
 
     postgre_manager = PostgreSQLManager()
@@ -34,7 +34,7 @@ def load_weather_to_datalake():
             weather_dict = json.loads(line)
             if verbose:
                 append_to_json(weather_dict, os.path.join(dir_path, 'dataJson', 'weatherInfo.json'))
-            mongo_manager.insert_document('Weather', weather_dict)
+            mongo_manager.insert_document('weather', weather_dict)
 
 
 def load_weather_to_datawarehouse():
@@ -59,4 +59,5 @@ def load_weather_to_datawarehouse():
             postgre_manager.add_record(Weather(**weather))
 
 
+load_weather_to_datalake()
 load_weather_to_datawarehouse()

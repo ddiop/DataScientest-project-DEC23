@@ -21,7 +21,7 @@ class Weather(Base):
     sunset = Column(Time)
     wind_gust_dir = Column(String)
     wind_gust_speed = Column(Float)
-    cloudiness = Column(Integer)
+    cloud = Column(Integer)
     humidity = Column(Integer)
     pressure = Column(Float)
     city_id = Column(Integer, ForeignKey('city.id'))
@@ -34,7 +34,7 @@ class Weather(Base):
                 f"Sunset={self.sunset},"
                 f"WindGustDir={self.wind_gust_dir},"
                 f"WindGustSpeed={self.wind_gust_speed},"
-                f"Cloudiness={self.cloudiness},"
+                f"Cloudiness={self.cloud},"
                 f"Humidity={self.humidity},"
                 f"Pressure={self.pressure},"
                 f"City_id={self.city_id})>")
@@ -51,7 +51,7 @@ class DailyWeather(Base):
     rainfall = Column(Float)
     wind_gust_dir = Column(String)
     wind_gust_speed = Column(Float)
-    cloudiness = Column(Integer)
+    cloud = Column(Integer)
     humidity = Column(Integer)
     pressure = Column(Float)
     city_id = Column(Integer, ForeignKey('city.id'))
@@ -63,7 +63,7 @@ class DailyWeather(Base):
                 f"Rainfall={self.rainfall},"
                 f"WindGustDir={self.wind_gust_dir},"
                 f"WindGustSpeed={self.wind_gust_speed},"
-                f"Cloudiness={self.cloudiness},"
+                f"Cloudiness={self.cloud},"
                 f"Humidity={self.humidity},"
                 f"Pressure={self.pressure},"
                 f"City_id={self.city_id})>")
