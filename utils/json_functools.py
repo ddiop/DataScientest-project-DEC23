@@ -27,7 +27,7 @@ def load_from_json(filename: str = 'example.json'):
     return data
 
 
-def append_to_json(data, filename: str = 'example.json') -> None:
+def list_to_json(data, filename: str = 'example.json') -> None:
     """
     Appends data to a JSON file.
     :param data: The data to append.

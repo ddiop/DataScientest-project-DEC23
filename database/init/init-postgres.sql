@@ -5,10 +5,10 @@ GRANT ALL PRIVILEGES ON DATABASE ${POSTGRES_DB} TO ${PG_USER};
 
 CREATE TABLE city (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    country VARCHAR(255) NOT NULL,
-    latitude FLOAT NOT NULL,
-    longitude FLOAT NOT NULL
+    name      VARCHAR(255),
+    country   VARCHAR(255),
+    latitude  FLOAT,
+    longitude FLOAT
 );
 
 CREATE TABLE weather (
@@ -20,8 +20,8 @@ CREATE TABLE weather (
     sunset TIME,
     wind_gust_dir VARCHAR(255),
     wind_gust_speed FLOAT,
-    cloudiness INTEGER,
-    humidity INTEGER,
+    cloud    FLOAT,
+    humidity FLOAT,
     pressure FLOAT,
     city_id INTEGER,
     FOREIGN KEY (city_id) REFERENCES city(id)
@@ -35,8 +35,8 @@ CREATE TABLE daily_weather (
     rainfall FLOAT,
     wind_gust_dir VARCHAR(255),
     wind_gust_speed FLOAT,
-    cloudiness INTEGER,
-    humidity INTEGER,
+    cloud    FLOAT,
+    humidity FLOAT,
     pressure FLOAT,
     city_id INTEGER,
     FOREIGN KEY (city_id) REFERENCES city(id)

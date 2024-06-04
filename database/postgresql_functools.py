@@ -21,8 +21,8 @@ class Weather(Base):
     sunset = Column(Time)
     wind_gust_dir = Column(String)
     wind_gust_speed = Column(Float)
-    cloud = Column(Integer)
-    humidity = Column(Integer)
+    cloud = Column(Float)
+    humidity = Column(Float)
     pressure = Column(Float)
     city_id = Column(Integer, ForeignKey('city.id'))
 
@@ -34,7 +34,7 @@ class Weather(Base):
                 f"Sunset={self.sunset},"
                 f"WindGustDir={self.wind_gust_dir},"
                 f"WindGustSpeed={self.wind_gust_speed},"
-                f"Cloudiness={self.cloud},"
+                f"Cloud={self.cloud},"
                 f"Humidity={self.humidity},"
                 f"Pressure={self.pressure},"
                 f"City_id={self.city_id})>")
@@ -51,8 +51,8 @@ class DailyWeather(Base):
     rainfall = Column(Float)
     wind_gust_dir = Column(String)
     wind_gust_speed = Column(Float)
-    cloud = Column(Integer)
-    humidity = Column(Integer)
+    cloud = Column(Float)
+    humidity = Column(Float)
     pressure = Column(Float)
     city_id = Column(Integer, ForeignKey('city.id'))
 
@@ -63,7 +63,7 @@ class DailyWeather(Base):
                 f"Rainfall={self.rainfall},"
                 f"WindGustDir={self.wind_gust_dir},"
                 f"WindGustSpeed={self.wind_gust_speed},"
-                f"Cloudiness={self.cloud},"
+                f"Cloud={self.cloud},"
                 f"Humidity={self.humidity},"
                 f"Pressure={self.pressure},"
                 f"City_id={self.city_id})>")
@@ -168,8 +168,8 @@ class City(Base):
                 f"Longitude={self.longitude})>")
 
 
-class PostgreSQLManager:
-    """ PostgreSQL Manager class """
+class PostgresManager:
+    """ Postgres Manager class """
     def __init__(self):
         self.user = os.getenv('PG_USER')
         self.password = os.getenv('PG_PASSWORD')
@@ -208,4 +208,4 @@ class PostgreSQLManager:
 
 
 if __name__ == "__main__":
-    db = PostgreSQLManager()
+    db = PostgresManager()

@@ -1,17 +1,15 @@
 """
 This module contains utility functions for fetching and processing data
 """
-
-
 from datetime import datetime, timedelta
 from typing import Dict, List, Tuple, Optional
 
 import requests
 
 
-def fetch_api_data(url: str) -> Dict:
+def request_api(url: str) -> Dict:
     """
-    Fetches data from the given API URL and returns it as a dictionary.
+    Requests data from the specified URL and returns the response as a dictionary.
     Raises an exception for non-200 responses.
 
     :param url: The URL from which to fetch the data.
@@ -25,22 +23,20 @@ def fetch_api_data(url: str) -> Dict:
     raise ConnectionError(f"Web server response: {response.status_code}")
 
 
-def extract_lat_lon(data: List[Dict], country_code: str) -> Tuple[List[float], List[float]]:
+def extract_lat_lon(data: List[Dict]) -> Tuple[List[float], List[float]]:
     """
     Extracts latitudes and longitudes for locations within
     the specified country from the provided dataset.
 
     :param data: A list of dictionaries, each representing a location.
-    :param country_code: The ISO 3166-1 alpha-2 country code used to filter locations by country.
     :return: A tuple containing two lists:
         * The first list contains the latitudes of locations within the specified country.
         * The second list contains the longitudes of these locations.
     """
     latitudes, longitudes = [], []
     for location in data:
-        if location['country'] == country_code:
-            latitudes.append(location['lat'])
-            longitudes.append(location['lon'])
+        latitudes.append(location['lat'])
+        longitudes.append(location['lon'])
     return latitudes, longitudes
 
 
