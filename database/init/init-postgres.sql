@@ -5,15 +5,15 @@ GRANT ALL PRIVILEGES ON DATABASE ${POSTGRES_DB} TO ${PG_USER};
 
 CREATE TABLE city (
     id SERIAL PRIMARY KEY,
-    name      VARCHAR(255),
+    name      VARCHAR(255) NOT NULL,
     country   VARCHAR(255),
-    latitude  FLOAT,
-    longitude FLOAT
+    latitude  FLOAT NOT NULL UNIQUE,
+    longitude FLOAT NOT NULL UNIQUE
 );
 
 CREATE TABLE weather (
     id SERIAL PRIMARY KEY,
-    date TIMESTAMP,
+    date TIMESTAMP NOT NULL UNIQUE,
     temp FLOAT,
     rainfall FLOAT,
     sunrise TIME,
@@ -23,13 +23,13 @@ CREATE TABLE weather (
     cloud    FLOAT,
     humidity FLOAT,
     pressure FLOAT,
-    city_id INTEGER,
+    city_id INTEGER NOT NULL,
     FOREIGN KEY (city_id) REFERENCES city(id)
 );
 
 CREATE TABLE daily_weather (
     id SERIAL PRIMARY KEY,
-    date TIMESTAMP,
+    date TIMESTAMP NOT NULL UNIQUE,
     min_temp FLOAT,
     max_temp FLOAT,
     rainfall FLOAT,
@@ -38,13 +38,13 @@ CREATE TABLE daily_weather (
     cloud    FLOAT,
     humidity FLOAT,
     pressure FLOAT,
-    city_id INTEGER,
+    city_id INTEGER NOT NULL,
     FOREIGN KEY (city_id) REFERENCES city(id)
 );
 
 CREATE TABLE air_pollution (
     id SERIAL PRIMARY KEY,
-    date TIMESTAMP,
+    date TIMESTAMP NOT NULL UNIQUE,
     air_quality_index INTEGER,
     co_concentration FLOAT,
     no_concentration FLOAT,
@@ -54,14 +54,14 @@ CREATE TABLE air_pollution (
     pm25_concentration FLOAT,
     pm10_concentration FLOAT,
     nh3_concentration FLOAT,
-    city_id INTEGER,
+    city_id INTEGER NOT NULL,
     FOREIGN KEY (city_id) REFERENCES city(id)
 );
 
 CREATE TABLE australian_meteorology_weather (
     id SERIAL PRIMARY KEY,
-    date DATE,
-    location VARCHAR(255),
+    date DATE NOT NULL,
+    location VARCHAR(255) NOT NULL,
     min_temp FLOAT,
     max_temp FLOAT,
     rainfall FLOAT,

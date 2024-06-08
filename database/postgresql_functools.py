@@ -14,7 +14,7 @@ class Weather(Base):
     __tablename__ = 'weather'
 
     id = Column(Integer, primary_key=True)
-    date = Column(DateTime)
+    date = Column(DateTime, nullable=False, unique=True)
     temp = Column(Float)
     rainfall = Column(Float)
     sunrise = Column(Time)
@@ -24,7 +24,8 @@ class Weather(Base):
     cloud = Column(Float)
     humidity = Column(Float)
     pressure = Column(Float)
-    city_id = Column(Integer, ForeignKey('city.id'))
+    test = Column(String)
+    city_id = Column(Integer, ForeignKey('city.id'), nullable=False)
 
     def __repr__(self):
         return (f"<Weather(Date={self.date},"
@@ -45,7 +46,7 @@ class DailyWeather(Base):
     __tablename__ = 'daily_weather'
 
     id = Column(Integer, primary_key=True)
-    date = Column(Date)
+    date = Column(Date, nullable=False, unique=True)
     min_temp = Column(Float)
     max_temp = Column(Float)
     rainfall = Column(Float)
@@ -54,7 +55,7 @@ class DailyWeather(Base):
     cloud = Column(Float)
     humidity = Column(Float)
     pressure = Column(Float)
-    city_id = Column(Integer, ForeignKey('city.id'))
+    city_id = Column(Integer, ForeignKey('city.id'), nullable=False)
 
     def __repr__(self):
         return (f"<DailyWeather(Date={self.date},"
@@ -74,7 +75,7 @@ class AirPollution(Base):
     __tablename__ = 'air_pollution'
 
     id = Column(Integer, primary_key=True)
-    date = Column(DateTime)
+    date = Column(DateTime, nullable=False, unique=True)
     air_quality_index = Column(Integer)
     co_concentration = Column(Float)
     no_concentration = Column(Float)
@@ -84,7 +85,7 @@ class AirPollution(Base):
     pm25_concentration = Column(Float)
     pm10_concentration = Column(Float)
     nh3_concentration = Column(Float)
-    city_id = Column(Integer, ForeignKey('city.id'))
+    city_id = Column(Integer, ForeignKey('city.id'), nullable=False)
 
     def __repr__(self):
         return (f"<AirPollution(Date={self.date},"
@@ -105,8 +106,8 @@ class AustralianMeteorologyWeather(Base):
     __tablename__ = 'australian_meteorology_weather'
 
     id = Column(Integer, primary_key=True)
-    date = Column(Date)
-    location = Column(String)
+    date = Column(Date, nullable=False)
+    location = Column(String, nullable=False)
     min_temp = Column(Float)
     max_temp = Column(Float)
     rainfall = Column(Float)
@@ -156,10 +157,10 @@ class City(Base):
     __tablename__ = 'city'
 
     id = Column(Integer, primary_key=True)
-    name = Column(String)
+    name = Column(String, nullable=False)
     country = Column(String)
-    latitude = Column(Float)
-    longitude = Column(Float)
+    latitude = Column(Float, nullable=False, unique=True)
+    longitude = Column(Float, nullable=False, unique=True)
 
     def __repr__(self):
         return (f"<City(Name={self.name},"
