@@ -13,7 +13,7 @@ def date_to_timestamp(date_str):
 
 
 if __name__ == '__main__':
-    start_date = '2017-01-01'
+    start_date = '2020-01-01'
     end_date = '2024-01-01'
 
     daily_air_pollution_manager = DataPipeline(OpenWeatherDailyAirPollution(

@@ -1,8 +1,7 @@
 """
 This script is used to scrape the Australian Bureau of Meteorology website
 """
-
-
+import numpy as np
 from dotenv import load_dotenv
 from itertools import product
 import re
@@ -95,7 +94,7 @@ def parse_html_content(soup: BeautifulSoup) -> pd.DataFrame:
     days = [index.text for row in rows for index in row.find_all('th')]
 
     # Compile the data for each day from the table rows
-    data = [[cell.text if cell.text != '\xa0' else '-1'
+    data = [[cell.text if cell.text != '\xa0' else np.nan
              for cell in row.find_all('td')]
             for row in rows]
 
@@ -181,13 +180,10 @@ if __name__ == '__main__':
     pages_to_scrape = generate_urls(dates_to_scrape, list(locations_to_scrape.values()))
 
     # Aggregate the weather data
-    weather_df = aggregate_weather_data(pages_to_scrape)
+    weather_scrapped = aggregate_weather_data(pages_to_scrape)
+    weather_df = replace_values_in_columns(weather_scrapped, ['location'],
+                                           'Melbourne (Olympic Park)', 'Melbourne')
 
-    # Replace missing values with 'NA' in the wind direction columns
-    columns_to_update = ['wind_gust_dir', 'wind_dir_9am', 'wind_dir_3pm']
-    weather_df = replace_values_in_columns(weather_df, columns_to_update, -1, 'NA')
-
-    # Store the weather data to datawarehouse
+    # Store the weather data to data warehouse
     weather_df.to_sql('australian_meteorology_weather',
                       postgres.engine, if_exists='append', index=False)
-    weather_df.to_csv('weather_data.csv', index=False)

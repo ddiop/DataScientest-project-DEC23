@@ -57,8 +57,8 @@ def load_timestamp_weather(path, postgre, mongo):
                        'sunset': build_date_timestamp(timestamp=data['data'][0]['sunset'],
                                                       timezone=data['timezone_offset'],
                                                       mode='hours'),
-                       'wind_gust_dir': deg_to_cardinal(data['data'][0]['wind_deg']),
-                       'wind_gust_speed': data['data'][0]['wind_speed'],
+                       'wind_dir': deg_to_cardinal(data['data'][0]['wind_deg']),
+                       'wind_speed': data['data'][0]['wind_speed'],
                        'cloud': data['data'][0]['clouds'],
                        'humidity': data['data'][0]['humidity'],
                        'pressure': data['data'][0]['pressure'],
@@ -85,7 +85,6 @@ def get_daily_weather_data(postgres):
         c.name, dw.date
     """
     df_daily = pd.read_sql_query(daily_weather_query, postgres.engine)
-    df_daily = df_daily.drop_duplicates(subset=['date', 'location'])  # TODO - still necessary?
     df_daily['evaporation'], df_daily['sunshine'] = -1, -1
     return df_daily
 
@@ -99,8 +98,8 @@ def get_weather_9am_data(postgres):
         w.cloud,
         w.pressure,
         w.humidity,
-        w.wind_gust_speed,
-        w.wind_gust_dir
+        w.wind_speed,
+        w.wind_dir
     FROM
         weather w
     JOIN
@@ -111,7 +110,6 @@ def get_weather_9am_data(postgres):
         c.name, w.date
     """
     df_9am = pd.read_sql_query(weather_9am_query, postgres.engine)
-    df_9am = df_9am.drop_duplicates(subset=['date', 'location'])  # TODO - still necessary?
     return df_9am
 
 
@@ -124,8 +122,8 @@ def get_weather_3pm_data(postgres):
         w.cloud,
         w.pressure,
         w.humidity,
-        w.wind_gust_speed,
-        w.wind_gust_dir
+        w.wind_speed,
+        w.wind_dir
     FROM
         weather w
     JOIN
@@ -136,7 +134,6 @@ def get_weather_3pm_data(postgres):
         c.name, w.date
     """
     df_3pm = pd.read_sql_query(weather_3pm_query, postgres.engine)
-    df_3pm = df_3pm.drop_duplicates(subset=['date', 'location'])  # TODO - still necessary?
     return df_3pm
 
 

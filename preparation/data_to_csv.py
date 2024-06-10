@@ -10,5 +10,6 @@ if __name__ == '__main__':
     postgres = PostgresManager()
     root_path = Path().resolve().parent
 
-    df = pd.read_sql_table('australian_meteorology_weather', postgres.engine)
-    df.to_csv(os.path.join(root_path, 'data', 'csv', 'weather_study.csv'), index=False)
+    df = pd.read_sql_table('australian_meteorology_weather', postgres.engine) \
+        .drop(columns=['id']) \
+        .to_csv(os.path.join(root_path, 'data', 'csv', 'weather_study.csv'), index=False)

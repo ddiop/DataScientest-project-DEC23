@@ -20,7 +20,7 @@ class OpenWeatherAPI(ABC):
     api_key = os.getenv("OPENWEATHER_API_KEY")
 
     datalake_manager = MongoDBManager()
-    datawarehouse_manager = PostgresManager()
+    data_warehouse_manager = PostgresManager()
 
     @abstractmethod
     def __init__(self):
@@ -68,13 +68,13 @@ class OpenWeatherAPI(ABC):
         """
         self.datalake_manager.insert_document(self.collection_name, data)
 
-    def load_to_datawarehouse(self, data: Dict):
+    def load_to_data_warehouse(self, data: Dict):
         """
         Loads the structured data to the PostgresSQL data warehouse.
 
         :param data: The structured data to be loaded.
         """
-        self.datawarehouse_manager.add_record(self.table_name(**data))
+        self.data_warehouse_manager.add_record(self.table_name(**data))
 
 
 class OpenWeatherCity(OpenWeatherAPI):
@@ -132,7 +132,7 @@ class OpenWeatherByCities(OpenWeatherAPI):
         :param longitude: The longitude of the location.
         :return: The city ID corresponding to the provided coordinates.
         """
-        city_id = self.datawarehouse_manager.fetch_city_record_by_coord(latitude, longitude).id
+        city_id = self.data_warehouse_manager.fetch_city_record_by_coord(latitude, longitude).id
         return city_id
 
     @abstractmethod
@@ -213,8 +213,8 @@ class OpenWeatherTimestampWeather(OpenWeatherByCities):
             'sunset': build_date_timestamp(timestamp=data['data'][0]['sunset'],
                                            timezone=data['timezone_offset'],
                                            mode='hours'),
-            'wind_gust_dir': deg_to_cardinal(data['data'][0]['wind_deg']),
-            'wind_gust_speed': data['data'][0]['wind_speed'],
+            'wind_dir': deg_to_cardinal(data['data'][0]['wind_deg']),
+            'wind_speed': data['data'][0]['wind_speed'],
             'cloud': data['data'][0]['clouds'],
             'humidity': data['data'][0]['humidity'],
             'pressure': data['data'][0]['pressure'],

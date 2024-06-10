@@ -2,12 +2,12 @@ class DataPipeline:
     def __init__(self, openweather_manager):
         self.manager = openweather_manager
 
-    def load_to_datawarehouse(self, data):
+    def load_to_data_warehouse(self, data):
         if isinstance(data, list):
             for data_transformed in data:
-                self.manager.load_to_datawarehouse(data_transformed)
+                self.manager.load_to_data_warehouse(data_transformed)
         else:
-            self.manager.load_to_datawarehouse(data)
+            self.manager.load_to_data_warehouse(data)
 
     def run(self):
         # Extract
@@ -21,4 +21,4 @@ class DataPipeline:
             data_transform = self.manager.transform_data(data_dict)
 
             # Load
-            self.load_to_datawarehouse(data_transform)
+            self.load_to_data_warehouse(data_transform)

@@ -7,19 +7,19 @@ CREATE TABLE city (
     id SERIAL PRIMARY KEY,
     name      VARCHAR(255) NOT NULL,
     country   VARCHAR(255),
-    latitude  FLOAT NOT NULL UNIQUE,
-    longitude FLOAT NOT NULL UNIQUE
+    latitude  FLOAT NOT NULL,
+    longitude FLOAT NOT NULL
 );
 
 CREATE TABLE weather (
     id SERIAL PRIMARY KEY,
-    date TIMESTAMP NOT NULL UNIQUE,
+    date TIMESTAMP NOT NULL,
     temp FLOAT,
     rainfall FLOAT,
     sunrise TIME,
     sunset TIME,
-    wind_gust_dir VARCHAR(255),
-    wind_gust_speed FLOAT,
+    wind_dir VARCHAR(255),
+    wind_speed FLOAT,
     cloud    FLOAT,
     humidity FLOAT,
     pressure FLOAT,
@@ -29,7 +29,7 @@ CREATE TABLE weather (
 
 CREATE TABLE daily_weather (
     id SERIAL PRIMARY KEY,
-    date TIMESTAMP NOT NULL UNIQUE,
+    date TIMESTAMP NOT NULL,
     min_temp FLOAT,
     max_temp FLOAT,
     rainfall FLOAT,
@@ -44,7 +44,7 @@ CREATE TABLE daily_weather (
 
 CREATE TABLE air_pollution (
     id SERIAL PRIMARY KEY,
-    date TIMESTAMP NOT NULL UNIQUE,
+    date TIMESTAMP NOT NULL,
     air_quality_index INTEGER,
     co_concentration FLOAT,
     no_concentration FLOAT,

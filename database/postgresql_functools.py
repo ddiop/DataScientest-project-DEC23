@@ -1,4 +1,4 @@
-""" Datawarehouse """
+""" Data warehouse """
 
 import os
 
@@ -19,12 +19,11 @@ class Weather(Base):
     rainfall = Column(Float)
     sunrise = Column(Time)
     sunset = Column(Time)
-    wind_gust_dir = Column(String)
-    wind_gust_speed = Column(Float)
+    wind_dir = Column(String)
+    wind_speed = Column(Float)
     cloud = Column(Float)
     humidity = Column(Float)
     pressure = Column(Float)
-    test = Column(String)
     city_id = Column(Integer, ForeignKey('city.id'), nullable=False)
 
     def __repr__(self):
