@@ -15,7 +15,6 @@ CREATE TABLE weather (
     id SERIAL PRIMARY KEY,
     date TIMESTAMP NOT NULL,
     temp FLOAT,
-    rainfall FLOAT,
     sunrise TIME,
     sunset TIME,
     wind_dir VARCHAR(255),
@@ -33,11 +32,10 @@ CREATE TABLE daily_weather (
     min_temp FLOAT,
     max_temp FLOAT,
     rainfall FLOAT,
+    evaporation FLOAT,
+    sunshine FLOAT,
     wind_gust_dir VARCHAR(255),
     wind_gust_speed FLOAT,
-    cloud    FLOAT,
-    humidity FLOAT,
-    pressure FLOAT,
     city_id INTEGER NOT NULL,
     FOREIGN KEY (city_id) REFERENCES city(id)
 );
@@ -58,30 +56,49 @@ CREATE TABLE air_pollution (
     FOREIGN KEY (city_id) REFERENCES city(id)
 );
 
-CREATE TABLE australian_meteorology_weather (
-    id SERIAL PRIMARY KEY,
-    date DATE NOT NULL,
-    location VARCHAR(255) NOT NULL,
-    min_temp FLOAT,
-    max_temp FLOAT,
-    rainfall FLOAT,
-    evaporation FLOAT,
-    sunshine FLOAT,
-    wind_gust_dir VARCHAR(255),
-    wind_gust_speed FLOAT,
-    temp_9am FLOAT,
-    humidity_9am FLOAT,
-    cloud_9am FLOAT,
-    wind_dir_9am VARCHAR(255),
-    wind_speed_9am FLOAT,
-    pressure_9am FLOAT,
-    temp_3pm FLOAT,
-    humidity_3pm FLOAT,
-    cloud_3pm FLOAT,
-    wind_dir_3pm VARCHAR(255),
-    wind_speed_3pm FLOAT,
-    pressure_3pm FLOAT
-);
+CREATE VIEW australian_meteorology_weather AS
+    SELECT
+        dw.id,
+        EXTRACT(YEAR FROM dw.date) || '-' || EXTRACT(MONTH FROM dw.date) || '-' || EXTRACT(DAY FROM dw.date) AS date,
+        c.name AS location,
+        dw.min_temp,
+        dw.max_temp,
+        dw.rainfall,
+        dw.evaporation,
+        dw.sunshine,
+        dw.wind_gust_dir,
+        dw.wind_gust_speed,
+        w9.temp AS temp_9am,
+        w9.humidity AS humidity_9am,
+        w9.cloud AS cloud_9am,
+        w9.wind_dir AS wind_dir_9am,
+        w9.wind_speed AS wind_speed_9am,
+        w9.pressure AS pressure_9am,
+        w3.temp AS temp_3pm,
+        w3.humidity AS humidity_3pm,
+        w3.cloud AS cloud_3pm,
+        w3.wind_dir AS wind_dir_3pm,
+        w3.wind_speed AS wind_speed_3pm,
+        w3.pressure AS pressure_3pm
+    FROM
+        daily_weather dw
+    JOIN
+        city c ON dw.city_id = c.id
+    LEFT JOIN
+        weather w9 ON dw.city_id = w9.city_id
+                          AND EXTRACT(HOUR FROM w9.date) = 9
+                          AND EXTRACT(YEAR FROM dw.date) = EXTRACT(YEAR FROM w9.date)
+                          AND EXTRACT(MONTH FROM dw.date) = EXTRACT(MONTH FROM w9.date)
+                          AND EXTRACT(DAY FROM dw.date) = EXTRACT(DAY FROM w9.date)
+    LEFT JOIN
+        weather w3 ON dw.city_id = w3.city_id
+                          AND EXTRACT(HOUR FROM w3.date) = 15
+                          AND EXTRACT(YEAR FROM dw.date) = EXTRACT(YEAR FROM w3.date)
+                          AND EXTRACT(MONTH FROM dw.date) = EXTRACT(MONTH FROM w3.date)
+                          AND EXTRACT(DAY FROM dw.date) = EXTRACT(DAY FROM w3.date)
+    ORDER BY
+        location, date;
+
 
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO ${PG_USER};
 GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO ${PG_USER};

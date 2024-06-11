@@ -16,7 +16,6 @@ class Weather(Base):
     id = Column(Integer, primary_key=True)
     date = Column(DateTime, nullable=False, unique=True)
     temp = Column(Float)
-    rainfall = Column(Float)
     sunrise = Column(Time)
     sunset = Column(Time)
     wind_dir = Column(String)
@@ -32,8 +31,8 @@ class Weather(Base):
                 f"Rainfall={self.rainfall},"
                 f"Sunrise={self.sunrise},"
                 f"Sunset={self.sunset},"
-                f"WindGustDir={self.wind_gust_dir},"
-                f"WindGustSpeed={self.wind_gust_speed},"
+                f"WindGustDir={self.wind_dir},"
+                f"WindGustSpeed={self.wind_speed},"
                 f"Cloud={self.cloud},"
                 f"Humidity={self.humidity},"
                 f"Pressure={self.pressure},"
@@ -49,11 +48,10 @@ class DailyWeather(Base):
     min_temp = Column(Float)
     max_temp = Column(Float)
     rainfall = Column(Float)
+    evaporation = Column(Float)
+    sunshine = Column(Float)
     wind_gust_dir = Column(String)
     wind_gust_speed = Column(Float)
-    cloud = Column(Float)
-    humidity = Column(Float)
-    pressure = Column(Float)
     city_id = Column(Integer, ForeignKey('city.id'), nullable=False)
 
     def __repr__(self):
@@ -63,9 +61,6 @@ class DailyWeather(Base):
                 f"Rainfall={self.rainfall},"
                 f"WindGustDir={self.wind_gust_dir},"
                 f"WindGustSpeed={self.wind_gust_speed},"
-                f"Cloud={self.cloud},"
-                f"Humidity={self.humidity},"
-                f"Pressure={self.pressure},"
                 f"City_id={self.city_id})>")
 
 
@@ -101,7 +96,7 @@ class AirPollution(Base):
 
 
 class AustralianMeteorologyWeather(Base):
-    """ Australian Meteorology Weather table """
+    """ Australian Meteorology Weather view """
     __tablename__ = 'australian_meteorology_weather'
 
     id = Column(Integer, primary_key=True)

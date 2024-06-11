@@ -6,11 +6,12 @@ import pandas as pd
 from dotenv import load_dotenv
 
 from database.postgresql_functools import PostgresManager
+from utils.df_to_kaggle_format import transform_to_kaggle_format
 from utils.json_functools import load_from_json
 
 
-def load_kaggle(locations, path, postgres):
-    pd.read_csv(os.path.join(path, 'data', 'csv', 'weatherAUS.csv')) \
+def load_kaggle(locations, path):
+    df = pd.read_csv(os.path.join(path, 'data', 'csv', 'weatherAUS.csv')) \
         .drop(columns=['RainToday', 'RainTomorrow']) \
         .rename(columns={'Date': 'date',
                          'Location': 'location',
@@ -33,10 +34,10 @@ def load_kaggle(locations, path, postgres):
                          'Cloud3pm': 'cloud_3pm',
                          'Temp9am': 'temp_9am',
                          'Temp3pm': 'temp_3pm'}) \
-        .replace('NA', np.nan) \
         .loc[lambda x: x['location'].isin(locations)] \
-        .to_sql('australian_meteorology_weather', postgres.engine,
-                if_exists='append', index=False)
+        .replace('Brisbane', 'Brisbane City') \
+        .replace('NA', np.nan)
+    return df
 
 
 if __name__ == '__main__':
@@ -44,6 +45,19 @@ if __name__ == '__main__':
     load_dotenv()
     config = load_from_json(os.path.join(dir_path, 'config.json'))
     locations_to_keep = config['locations']
+
+    # Workaround
+    locations_to_keep.remove('Brisbane City')
+    locations_to_keep.append('Brisbane')
+
     postgres_manager = PostgresManager()
 
-    load_kaggle(locations_to_keep, dir_path, postgres_manager)
+    kaggle_weather_df = load_kaggle(locations_to_keep, dir_path)
+
+    daily_weather, weather_9am, weather_3pm = (
+        transform_to_kaggle_format(kaggle_weather_df, postgres_manager))
+
+    # Store the weather data to data warehouse
+    daily_weather.to_sql('daily_weather', postgres_manager.engine, if_exists='append', index=False)
+    weather_9am.to_sql('weather', postgres_manager.engine, if_exists='append', index=False)
+    weather_3pm.to_sql('weather', postgres_manager.engine, if_exists='append', index=False)

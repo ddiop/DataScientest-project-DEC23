@@ -1,6 +1,7 @@
 """
 This script is used to scrape the Australian Bureau of Meteorology website
 """
+
 import numpy as np
 from dotenv import load_dotenv
 from itertools import product
@@ -12,6 +13,7 @@ from typing import List
 import pandas as pd
 from bs4 import BeautifulSoup
 from database.postgresql_functools import PostgresManager
+from utils.df_to_kaggle_format import transform_to_kaggle_format
 
 
 def generate_urls(dates: List[str], locations: List[str]) -> List[str]:
@@ -145,21 +147,6 @@ def aggregate_weather_data(urls: List[str]) -> pd.DataFrame:
     return aggregated_df
 
 
-def replace_values_in_columns(df, columns, old_value, new_value):
-    """
-    Replace specified values in given columns of a DataFrame.
-
-    :param df: DataFrame in which to replace values.
-    :param columns: List of column names in which to replace values.
-    :param old_value: The value to be replaced.
-    :param new_value: The value to replace with.
-    :return: DataFrame with replaced values.
-    """
-    for col in columns:
-        df[col] = df[col].replace({old_value: new_value})
-    return df
-
-
 if __name__ == '__main__':
     load_dotenv()
     postgres = PostgresManager()
@@ -180,10 +167,13 @@ if __name__ == '__main__':
     pages_to_scrape = generate_urls(dates_to_scrape, list(locations_to_scrape.values()))
 
     # Aggregate the weather data
-    weather_scrapped = aggregate_weather_data(pages_to_scrape)
-    weather_df = replace_values_in_columns(weather_scrapped, ['location'],
-                                           'Melbourne (Olympic Park)', 'Melbourne')
+    weather_scrapped = aggregate_weather_data(pages_to_scrape) \
+        .replace({'Melbourne (Olympic Park)': 'Melbourne',
+                  'Brisbane': 'Brisbane City'})
+
+    daily_weather, weather_9am, weather_3pm = transform_to_kaggle_format(weather_scrapped, postgres)
 
     # Store the weather data to data warehouse
-    weather_df.to_sql('australian_meteorology_weather',
-                      postgres.engine, if_exists='append', index=False)
+    daily_weather.to_sql('daily_weather', postgres.engine, if_exists='append', index=False)
+    weather_9am.to_sql('weather', postgres.engine, if_exists='append', index=False)
+    weather_3pm.to_sql('weather', postgres.engine, if_exists='append', index=False)
