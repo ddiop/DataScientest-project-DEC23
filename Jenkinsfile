@@ -49,7 +49,7 @@ pipeline {
                 export PATH=$PATH:/usr/local/bin
                 docker rm -f Australian || true
                     docker build -t $DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG .
-                    docker run -d -p 8000:8000 --name Australian $DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG
+                    docker run -d -p 8002:8002 --name Australian $DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG
                 '''
             } catch (Exception e) {
                 echo "Le déploiement a échoué : ${e.getMessage()}"
