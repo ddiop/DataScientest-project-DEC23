@@ -29,13 +29,15 @@ pipeline {
         }
         stage('Testing') {
             steps {
-                script {
+             script {
             sh '''
             . venv/bin/activate
             echo "Listing files in the tests directory:"
             ls -R tests
+            echo "Displaying content of test files:"
+            cat tests/test_databases.py
             echo "Running unit tests:"
-            python -m unittest discover -s tests -v
+            python -m unittest discover -s tests -p "test_*.py" -v
             '''
         }
             }
