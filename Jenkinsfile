@@ -1,5 +1,10 @@
 pipeline {
     agent any
+ environment {
+        DOCKER_ID = "ddiopegen"
+        DOCKER_IMAGE = "australian_api"
+        DOCKER_TAG = "v.${BUILD_ID}.0"
+    }
     stages {
         stage('Install Python venv') {
             steps {
@@ -42,9 +47,9 @@ pipeline {
                 // Assurez-vous que docker-compose est dans le PATH avant d'exécuter
                 sh '''
                 export PATH=$PATH:/usr/local/bin
-                docker-compose --version
-		docker-compose down -v  
-                docker-compose up -d
+                docker rm -f Australian || true
+                    docker build -t $DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG .
+                    docker run -d -p 8000:8000 --name Australian $DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG
                 '''
             } catch (Exception e) {
                 echo "Le déploiement a échoué : ${e.getMessage()}"
