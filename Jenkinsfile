@@ -32,23 +32,27 @@ pipeline {
             }
         }
         stage('Deploying') {
-            steps {
-                script {
-                    try {
-                        sh '''
-                       which docker-compose
-                        export PATH=$PATH:/usr/local/bin
-                        docker-compose --version
-                        docker-compose up --build
-                        '''
-                    } catch (Exception e) {
-                        echo "Deployment failed: ${e.getMessage()}"
-                        currentBuild.result = 'FAILURE'
-                        throw e
-                    }
-                }
+    steps {
+        script {
+            // Afficher le chemin de docker-compose pour vérification
+            sh 'echo "PATH=$PATH"'
+            sh 'which docker-compose || echo "docker-compose non trouvé"'
+
+            try {
+                // Assurez-vous que docker-compose est dans le PATH avant d'exécuter
+                sh '''
+                export PATH=$PATH:/usr/local/bin
+                docker-compose --version
+                docker-compose up --build
+                '''
+            } catch (Exception e) {
+                echo "Le déploiement a échoué : ${e.getMessage()}"
+                currentBuild.result = 'FAILURE'
+                throw e
             }
         }
+    }
+}
         stage('Cleanup') {
             steps {
                 sh 'docker system prune -af'
