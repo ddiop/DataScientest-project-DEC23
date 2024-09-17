@@ -36,7 +36,9 @@ pipeline {
                 script {
                     try {
                         sh '''
+                       which docker-compose
                         export PATH=$PATH:/usr/local/bin
+                        docker-compose --version
                         docker-compose up --build
                         '''
                     } catch (Exception e) {
