@@ -1,17 +1,11 @@
 pipeline {
     agent any
-    environment {
-        DOCKER_ID = "ddiopegen"
-        DOCKER_IMAGE = "datascientestapi"
-        DOCKER_TAG = "v.${BUILD_ID}.0"
-    }
     stages {
-
         stage('Install Python venv') {
             steps {
-            sh '''
-        which pg_config || echo "pg_config not found"
-        '''
+                sh '''
+                which pg_config || echo "pg_config not found"
+                '''
                 sh 'sudo apt update && sudo apt install -y python3-venv'
             }
         }
@@ -29,27 +23,28 @@ pipeline {
         }
         stage('Testing') {
             steps {
-             script {
-            sh '''
-            . venv/bin/activate
-            pytest --maxfail=1 --disable-warnings
-
-            '''
-        }
+                script {
+                    sh '''
+                    . venv/bin/activate
+                    pytest --maxfail=1 --disable-warnings
+                    '''
+                }
             }
         }
         stage('Deploying') {
-            script {
-            try {
-                sh '''
-                docker-compose up --build
-                '''
-            } catch (Exception e) {
-                echo "Deployment failed: ${e.getMessage()}"
-                currentBuild.result = 'FAILURE'
-                throw e
+            steps {
+                script {
+                    try {
+                        sh '''
+                        docker-compose up --build
+                        '''
+                    } catch (Exception e) {
+                        echo "Deployment failed: ${e.getMessage()}"
+                        currentBuild.result = 'FAILURE'
+                        throw e
+                    }
+                }
             }
-        }
         }
         stage('Cleanup') {
             steps {
@@ -58,7 +53,7 @@ pipeline {
         }
         stage('User Acceptance') {
             steps {
-                input message: "Proceed to push to main ? ", ok: "Yes"
+                input message: "Proceed to push to main ?", ok: "Yes"
             }
         }
     }
