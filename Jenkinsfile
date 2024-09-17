@@ -1,61 +1,23 @@
 pipeline {
     agent any
-    environment {
-        DOCKER_ID = "ddiopegen"
-        DOCKER_IMAGE = "datascientestapi"
-        DOCKER_TAG = "v.${BUILD_ID}.0"
-    }
+
     stages {
+        stage('Install dependencies') {
+            steps {
+                sh 'pip install -r requirements.txt'
+            }
+        }
 
-        stage('Install Python venv') {
+        stage('Run Tests') {
             steps {
-            sh '''
-        which pg_config || echo "pg_config not found"
-        '''
-                sh 'sudo apt update && sudo apt install -y python3-venv'
+                sh 'PYTHONPATH=. pytest --maxfail=1 --disable-warnings'
             }
         }
-        stage('Building') {
-            steps {
-                script {
-                    sh '''
-                    python3 -m venv venv
-                    . venv/bin/activate
-                    pip install --upgrade pip
-                    pip install -r requirements.txt
-                    '''
-                }
-            }
-        }
-        stage('Testing') {
-            steps {
-             script {
-            sh '''
-            . venv/bin/activate
-           PYTHONPATH=. pytest --maxfail=1 --disable-warnings
+    }
 
-            '''
-        }
-            }
-        }
-        stage('Deploying') {
-            steps {
-                script {
-                    sh '''
-
-                    '''
-                }
-            }
-        }
-        stage('Cleanup') {
-            steps {
-                sh 'docker system prune -af'
-            }
-        }
-        stage('User Acceptance') {
-            steps {
-                input message: "Proceed to push to main ? ", ok: "Yes"
-            }
+    post {
+        always {
+            junit '**/test-results.xml'  // Collecte des résultats de test, si nécessaire
         }
     }
 }
