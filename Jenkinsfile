@@ -32,7 +32,7 @@ pipeline {
              script {
             sh '''
             . venv/bin/activate
-            pytest --maxfail=1 --disable-warnings
+           PYTHONPATH=. pytest --maxfail=1 --disable-warnings
 
             '''
         }
