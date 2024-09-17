@@ -29,10 +29,15 @@ pipeline {
         }
         stage('Testing') {
             steps {
-                sh '''
-                . venv/bin/activate
-                python -m unittest discover -s tests
-                '''
+                script {
+            sh '''
+            . venv/bin/activate
+            echo "Listing files in the tests directory:"
+            ls -R tests
+            echo "Running unit tests:"
+            python -m unittest discover -s tests -v
+            '''
+        }
             }
         }
         stage('Deploying') {
