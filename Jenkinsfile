@@ -2,22 +2,31 @@ pipeline {
     agent any
 
     stages {
-        stage('Install dependencies') {
+        stage('Setup') {
             steps {
-                sh 'pip install -r requirements.txt'
+                // Créer un environnement virtuel
+                sh 'python3 -m venv venv'
+
+                // Activer l'environnement virtuel
+                sh '. venv/bin/activate'
+
+                // Installer les dépendances
+                sh 'venv/bin/pip install -r requirements.txt'
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh 'PYTHONPATH=. pytest --maxfail=1 --disable-warnings'
+                // Activer l'environnement virtuel et exécuter les tests
+                sh '. venv/bin/activate && venv/bin/pytest --maxfail=1 --disable-warnings'
             }
         }
     }
 
     post {
         always {
-            junit '**/test-results.xml'  // Collecte des résultats de test, si nécessaire
+            // Collecte des résultats de test
+            junit '**/test-results.xml'
         }
     }
 }
