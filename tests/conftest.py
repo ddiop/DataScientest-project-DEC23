@@ -5,7 +5,7 @@ from unittest.mock import MagicMock, patch
 @pytest.fixture
 def mock_postgres_manager():
     """Fixture pour mocker PostgresManager."""
-    with patch('database.postgresql_functools.PostgresManager') as MockPostgresManager:
+    with patch('postgresql_functools.PostgresManager') as MockPostgresManager:
         mock_instance = MockPostgresManager.return_value
 
         # Mock des méthodes pour simuler l'ajout, la récupération et la suppression des données
