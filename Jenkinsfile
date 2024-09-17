@@ -6,15 +6,12 @@ pipeline {
         DOCKER_TAG = "v.${BUILD_ID}.0"
     }
     stages {
-    stage('Verify pg_config') {
-    steps {
-        sh '''
-        which pg_config || echo "pg_config not found"
-        '''
-    }
 
         stage('Install Python venv') {
             steps {
+            sh '''
+        which pg_config || echo "pg_config not found"
+        '''
                 sh 'sudo apt update && sudo apt install -y python3-venv'
             }
         }
