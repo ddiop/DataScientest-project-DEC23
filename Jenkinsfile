@@ -39,13 +39,17 @@ pipeline {
             }
         }
         stage('Deploying') {
-            steps {
-                script {
-                    sh '''
-
-                    '''
-                }
+            script {
+            try {
+                sh '''
+                docker-compose up --build
+                '''
+            } catch (Exception e) {
+                echo "Deployment failed: ${e.getMessage()}"
+                currentBuild.result = 'FAILURE'
+                throw e
             }
+        }
         }
         stage('Cleanup') {
             steps {
