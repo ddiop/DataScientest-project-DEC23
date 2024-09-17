@@ -1,9 +1,7 @@
 pipeline {
     agent any
     environment {
-        DOCKER_ID = "ddiopegen"
-        DOCKER_IMAGE = "datascientestapi"
-        DOCKER_TAG = "v.${BUILD_ID}.0"
+
     }
     stages {
         stage('Install Python venv') {
@@ -35,9 +33,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                    docker rm -f jenkins || true
-                    docker build -t $DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG .
-                    docker run -d -p 8000:8000 --name jenkins $DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG
+
                     '''
                 }
             }

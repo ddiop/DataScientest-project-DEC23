@@ -1,52 +1,18 @@
-pipeline {
-    agent any
-    environment {
+# Dockerfile.test
 
-    }
-    stages {
-        stage('Install Python venv') {
-            steps {
-                sh 'sudo apt update && sudo apt install -y python3-venv'
-            }
-        }
-        stage('Building') {
-            steps {
-                script {
-                    sh '''
-                    python3 -m venv venv
-                    . venv/bin/activate
-                    pip install --upgrade pip
-                    pip install -r requirements.txt
-                    '''
-                }
-            }
-        }
-        stage('Testing') {
-            steps {
-                sh '''
-                . venv/bin/activate
-                python -m unittest discover
-                '''
-            }
-        }
-        stage('Deploying') {
-            steps {
-                script {
-                    sh '''
+FROM python:3.9
 
-                    '''
-                }
-            }
-        }
-        stage('Cleanup') {
-            steps {
-                sh 'docker system prune -af'
-            }
-        }
-        stage('User Acceptance') {
-            steps {
-                input message: "Proceed to push to main ? ", ok: "Yes"
-            }
-        }
-    }
-}
+WORKDIR /app
+
+# Copier les fichiers de dépendances et installer les paquets
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copier le code de l'application et les tests
+COPY . /app
+
+# Installer pytest et pytest-mock
+RUN pip install pytest pytest-mock
+
+# Commande par défaut pour exécuter les tests
+CMD ["pytest", "--maxfail=1", "--disable-warnings", "-q"]

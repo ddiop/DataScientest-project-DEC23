@@ -8,11 +8,11 @@ RUN apt-get update -y && apt-get install -y libpq-dev gcc
 WORKDIR /app
 
 # Copier tous les fichiers du répertoire de travail actuel dans le conteneur
-COPY .  .
-
-
+COPY . .
 
 # Installer les dépendances Python
-RUN pip install -r requirements.txt
+RUN pip install --upgrade pip && pip install -r requirements.txt
+
 # Installer Alembic
 RUN pip install alembic
+
