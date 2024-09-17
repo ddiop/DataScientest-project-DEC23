@@ -1,32 +1,59 @@
 pipeline {
     agent any
-
-    stages {
-        stage('Setup') {
-            steps {
-                // Créer un environnement virtuel
-                sh 'python3 -m venv venv'
-
-                // Activer l'environnement virtuel
-                sh '. venv/bin/activate'
-
-                // Installer les dépendances
-                sh 'venv/bin/pip install -r requirements.txt'
-            }
-        }
-
-        stage('Run Tests') {
-            steps {
-                // Activer l'environnement virtuel et exécuter les tests
-                sh '. venv/bin/activate && venv/bin/pytest --no-header --no-summary -q'
-            }
-        }
+    environment {
+        DOCKER_ID = "ddiopegen"
+        DOCKER_IMAGE = "datascientestapi"
+        DOCKER_TAG = "v.${BUILD_ID}.0"
     }
+    stages {
 
-    post {
-        always {
-            // Collecte des résultats de test
-            junit '**/test-results.xml'
+        stage('Install Python venv') {
+            steps {
+            sh '''
+        which pg_config || echo "pg_config not found"
+        '''
+                sh 'sudo apt update && sudo apt install -y python3-venv'
+            }
+        }
+        stage('Building') {
+            steps {
+                script {
+                    sh '''
+                    python3 -m venv venv
+                    . venv/bin/activate
+                    pip install --upgrade pip
+                    pip install -r requirements.txt
+                    '''
+                }
+            }
+        }
+        stage('Testing') {
+            steps {
+             script {
+            sh '''
+           venv/bin/activate && venv/bin/pytest --maxfail=1 --disable-warnings
+            '''
+        }
+            }
+        }
+        stage('Deploying') {
+            steps {
+                script {
+                    sh '''
+
+                    '''
+                }
+            }
+        }
+        stage('Cleanup') {
+            steps {
+                sh 'docker system prune -af'
+            }
+        }
+        stage('User Acceptance') {
+            steps {
+                input message: "Proceed to push to main ? ", ok: "Yes"
+            }
         }
     }
 }
