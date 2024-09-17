@@ -18,7 +18,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 // Activer l'environnement virtuel et exécuter les tests
-                sh '. venv/bin/activate && venv/bin/pytest --maxfail=1 --disable-warnings'
+                sh '. venv/bin/activate && venv/bin/pytest --no-header --no-summary -q'
             }
         }
     }
