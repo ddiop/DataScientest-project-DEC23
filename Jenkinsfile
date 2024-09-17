@@ -31,7 +31,9 @@ pipeline {
             steps {
              script {
             sh '''
-           venv/bin/activate && venv/bin/pytest --maxfail=1 --disable-warnings
+            . venv/bin/activate
+            pytest --maxfail=1 --disable-warnings
+
             '''
         }
             }
