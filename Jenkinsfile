@@ -43,7 +43,8 @@ pipeline {
                 sh '''
                 export PATH=$PATH:/usr/local/bin
                 docker-compose --version
-                docker-compose up --build
+		docker-compose down -v  
+                docker-compose up -d
                 '''
             } catch (Exception e) {
                 echo "Le déploiement a échoué : ${e.getMessage()}"
