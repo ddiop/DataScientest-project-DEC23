@@ -1,4 +1,84 @@
+version: "3"
+x-airflow-common: &airflow-common
+  image: ${AIRFLOW_IMAGE_NAME:-apache/airflow:2.8.1}
+  environment: &airflow-common-env
+    AIRFLOW__CORE__EXECUTOR: CeleryExecutor
+    AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres/${POSTGRES_DB}
+    AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres/${POSTGRES_DB}
+    AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
+    AIRFLOW__CORE__FERNET_KEY: ""
+    AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "true"
+    AIRFLOW__CORE__LOAD_EXAMPLES: "true"
+    AIRFLOW__API__AUTH_BACKEND: "airflow.api.auth.backend.basic_auth"
+    AIRFLOW__SMTP__SMTP_HOST: "smtp.gmail.com"
+    AIRFLOW__SMTP__SMTP_PORT: 587
+    AIRFLOW__SMTP__SMTP_USER: "de.airflow@gmail.com"
+    AIRFLOW__SMTP__SMTP_PASSWORD: "cfsrvkongsobheta"
+    AIRFLOW__SMTP__SMTP_MAIL_FROM: "de.airflow@gmail.com"
+    AIRFLOW__MONGO__CONN_ID: "mongo_default"
+   # AIRFLOW__MONGO__HOST: "mongo"
+   # AIRFLOW__MONGO__PORT: 27017
+   # AIRFLOW__MONGO__USERNAME: "root"
+   # AIRFLOW__MONGO__PASSWORD: "example"
+    _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-apache-airflow-providers-docker pymongo}
+  volumes:
+    - ./dags:/opt/airflow/dags
+    - ./logs:/opt/airflow/logs
+    - ./plugins:/opt/airflow/plugins
+    - ./api:/opt/airflow/api
+    - ./data:/opt/airflow/data
+    - /var/run/docker.sock:/var/run/docker.sock
+  user: "${AIRFLOW_UID:-50000}:${AIRFLOW_GID:-50000}"
+  depends_on:
+    redis:
+      condition: service_healthy
+    postgres:
+      condition: service_healthy
+    mongo:
+      condition: service_healthy
+  networks:
+    - backend
+
 services:
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "${PG_PORT}:5432"
+    volumes:
+      - ./.env:/.env
+      - postgres-db-volume:/var/lib/postgresql/data
+      - ./database/init:/docker-entrypoint-initdb.d  # Montage des scripts d'initialisation
+
+
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U airflow" ]
+      interval: 5s
+      retries: 5
+      timeout: 10s
+    restart: always
+    networks:
+      - backend
+
+
+
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 30s
+      retries: 50
+    restart: always
+    networks:
+      - backend
+
   mongo:
     image: mongo:latest
     container_name: mongo
@@ -12,32 +92,139 @@ services:
       - "${MONGO_PORT}:27017"
     volumes:
       - ./database/init/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+    healthcheck:
+      test: [ "CMD", "mongosh", "--eval", "db.runCommand('ping')" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
     networks:
       - backend
 
-  postgres:
-    image: postgres:latest
-    container_name: postgres
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-      PG_USER: ${PG_USER}
-      PG_PASSWORD: ${PG_PASSWORD}
-      PG_HOST: ${PG_HOST}
-      PG_PORT: ${PG_PORT}
+  airflow-webserver:
+    <<: *airflow-common
+    command: webserver
     ports:
-      - "${PG_PORT}:5432"
+      - 8080:8080
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    restart: always
+    depends_on:
+      - mongo
+    networks:
+      - backend
+
+  airflow-scheduler:
+    <<: *airflow-common
+    command: scheduler
+    healthcheck:
+      test:
+        - "CMD-SHELL"
+        - 'airflow jobs check --job-type SchedulerJob --hostname "$${HOSTNAME}"'
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    restart: always
+    depends_on:
+      - mongo
+    networks:
+      - backend
+
+  airflow-worker:
+    <<: *airflow-common
+    command: celery worker
+    healthcheck:
+      test:
+        - "CMD-SHELL"
+        - 'celery --app airflow.executors.celery_executor.app inspect ping -d "celery@$${HOSTNAME}"'
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    restart: always
+    depends_on:
+      - mongo
+    networks:
+      - backend
+
+  airflow-init:
+    <<: *airflow-common
+    command: version
+    environment:
+      <<: *airflow-common-env
+      _AIRFLOW_DB_UPGRADE: "true"
+      _AIRFLOW_WWW_USER_CREATE: "true"
+      _AIRFLOW_WWW_USER_USERNAME: ${_AIRFLOW_WWW_USER_USERNAME:-airflow}
+      _AIRFLOW_WWW_USER_PASSWORD: ${_AIRFLOW_WWW_USER_PASSWORD:-airflow}
+    depends_on:
+      postgres:
+        condition: service_started
+      mongo:
+        condition: service_healthy
+    networks:
+      - backend
+
+  flower:
+    <<: *airflow-common
+    command: celery flower
+    ports:
+      - 5555:5555
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:5555/"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    restart: always
+    depends_on:
+      - mongo
+    networks:
+      - backend
+
+
+
+  mongo-express:
+    image: mongo-express
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_SERVER: "mongo"
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      ME_CONFIG_MONGODB_AUTH_DATABASE: "admin"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8081" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: always
+    networks:
+      - backend
+
+  test:
+    container_name: test
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    environment:
+      - PYTHONPATH=/app
     volumes:
-      - ./database/init/init-postgres.sh:/docker-entrypoint-initdb.d/init-postgres.sh
-      - ./database/init/init-postgres.sql:/tmp/init-postgres-tmp.sql
+      - ./tests:/app/tests
+    depends_on:
+      - postgres
+      - redis
+      - mongo
+      - airflow-webserver
+      - airflow-scheduler
+      - airflow-worker
     networks:
       - backend
 
 volumes:
-  mongo_data:
-  postgres_data:
+  postgres-db-volume:
+
 
 networks:
   backend:
     driver: bridge
+    name: backend

@@ -1,3 +1,6 @@
+import sys
+print("Python path:", sys.path)
+sys.path.append('/app')
 from datetime import datetime
 
 from data_pipeline.pipeline_manager import DataPipeline

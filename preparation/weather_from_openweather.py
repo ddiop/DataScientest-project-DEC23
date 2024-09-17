@@ -1,3 +1,7 @@
+import sys
+print("Python path:", sys.path)
+sys.path.append('/app')
+
 import pandas as pd
 from datetime import datetime
 

@@ -1,3 +1,7 @@
+import sys
+print("Python path:", sys.path)
+sys.path.append('/app')
+
 from data_pipeline.pipeline_manager import DataPipeline
 from utils.ELTL import OpenWeatherCity
 
