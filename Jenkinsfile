@@ -36,6 +36,7 @@ pipeline {
                 script {
                     try {
                         sh '''
+                        export PATH=$PATH:/usr/local/bin
                         docker-compose up --build
                         '''
                     } catch (Exception e) {
