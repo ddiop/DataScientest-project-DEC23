@@ -63,7 +63,7 @@ docker rm $(docker ps -aq)
 }
         stage('Cleanup') {
             steps {
-                sh 'docker system prune -af'
+                sh 'fin'
             }
         }
         stage('User Acceptance') {
