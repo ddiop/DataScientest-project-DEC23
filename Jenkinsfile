@@ -47,7 +47,6 @@ pipeline {
                 // Assurez-vous que docker-compose est dans le PATH avant d'exécuter
                 sh '''
                 export PATH=$PATH:/usr/local/bin
-
                 docker rm -f australian || true
                 docker build -t $DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG .
                 docker run -d -p 8002:8002 --name australian $DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG
@@ -62,7 +61,7 @@ pipeline {
 }
         stage('Cleanup') {
             steps {
-                sh 'fin'
+                sh 'docker system prune -af'
             }
         }
         stage('User Acceptance') {
