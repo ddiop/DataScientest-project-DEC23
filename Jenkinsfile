@@ -47,8 +47,7 @@ pipeline {
                 // Assurez-vous que docker-compose est dans le PATH avant d'exécuter
                 sh '''
                 export PATH=$PATH:/usr/local/bin
-docker stop $(docker ps -aq)
-docker rm $(docker ps -aq)
+
                 docker rm -f australian || true
                 docker build -t $DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG .
                 docker run -d -p 8002:8002 --name australian $DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG
