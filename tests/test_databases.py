@@ -33,7 +33,6 @@ def test_mongo_insert_document(mock_mongo_manager):
     assert doc_id == "mock_id"
     mock_mongo_manager.insert_document.assert_called_once_with("test_collection", {"name": "Sydney"})
 
-
 def test_mongo_find_document(mock_mongo_manager):
     # Test de la récupération d'un document MongoDB
     mock_mongo_manager.find_document.return_value = {"name": "Sydney"}
